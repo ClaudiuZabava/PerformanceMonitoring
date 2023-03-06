@@ -1,0 +1,3 @@
+C:/Users/Claudiu-PC/Desktop/Performance Monitoring Main/PM_Data_Collection_C/cmake-build-debug/CMakeFiles/PM_Data_Collection_C.dir
+C:/Users/Claudiu-PC/Desktop/Performance Monitoring Main/PM_Data_Collection_C/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Claudiu-PC/Desktop/Performance Monitoring Main/PM_Data_Collection_C/cmake-build-debug/CMakeFiles/rebuild_cache.dir

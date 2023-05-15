@@ -1,0 +1,22 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/icons8-menu-48.png</file>
+    <file>icons/icons8-male-user-48.png</file>
+    <file>icons/icons8-maximize-window-48.png</file>
+    <file>icons/icons8-memory-slot-48.png</file>
+    <file>icons/icons8-minimize-window-48.png</file>
+    <file>icons/icons8-settings-48.png</file>
+    <file>icons/icons8-cd-48.png</file>
+    <file>icons/icons8-electronics-48.png</file>
+    <file>icons/icons8-laptop-settings-48.png</file>
+    <file>icons/icons8-ram-64.png</file>
+    <file>icons/icons8-signal-48.png</file>
+    <file>icons/icons8-video-card-48.png</file>
+    <file>icons/icons8-speedometer-78.png</file>
+    <file>icons/icons8-close-window-48.png</file>
+    <file>icons/icons8-shrink-48.png</file>
+    <file>icons/icons8-toggle-full-screen-48.png</file>
+    <file>icons/icons8-menu-96.png</file>
+    <file>icons/icons8-plus-48.png</file>
+  </qresource>
+</RCC>

@@ -13,7 +13,7 @@ def all_disks_mem_data():
         if _key not in _hard_disks:
             _hard_disks[_key] = {}
         _hard_disks[_key]['PartitionMem'] = psutil.disk_usage(_key).total
-        _total_memory = _total_memory + _hard_disks[_key]['TotalMem']
+        _total_memory = _total_memory + _hard_disks[_key]['PartitionMem']
         _hard_disks[_key]['UsedMem'] = psutil.disk_usage(_key).used
         _hard_disks[_key]['FreeMem'] = psutil.disk_usage(_key).free
         _hard_disks[_key]['UsedPer'] = psutil.disk_usage(_key).percent
@@ -21,7 +21,7 @@ def all_disks_mem_data():
     total_memory = math.ceil(_total_memory/1024**3)
     _hard_disks['TotalMem'] = total_memory
 
-    return _hard_disks
+    return _hard_disks if _hard_disks else None
 
 
 def disk_read_write_speed():
@@ -48,6 +48,7 @@ def disk_read_write_speed():
     else:
         print("Write speed: {} KB/s".format(_total_write / 1024))
 
+print(all_disks_mem_data())
 
 
 

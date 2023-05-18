@@ -10,7 +10,7 @@ def get_gpu_info():
         gpu_info['name'] = gpu.name
         gpu_info['memory_total_MB'] = gpu.memory_total
 
-        return gpu_info if gpu_info else None
+    return gpu_info if gpu_info else None
 
 def get_gpu_usage_data():
     gpu_stats = gpustat.GPUStatCollection.new_query()
@@ -21,4 +21,7 @@ def get_gpu_usage_data():
         gpu_data['memory_used_MB'] = gpu.memory_used
 
     return gpu_data if gpu_data else None
+
+
+print(get_gpu_info())
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AppaDRXkp.ui'
+## Form generated from reading UI file 'AppWlxoJN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -351,38 +351,37 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.cpu_info = QFrame(self.CPU)
         self.cpu_info.setObjectName(u"cpu_info")
-        self.cpu_info.setFrameShape(QFrame.StyledPanel)
-        self.cpu_info.setFrameShadow(QFrame.Raised)
         self.gridLayout_2 = QGridLayout(self.cpu_info)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.label_11 = QLabel(self.cpu_info)
-        self.label_11.setObjectName(u"label_11")
-        font4 = QFont()
-        font4.setPointSize(16)
-        font4.setBold(True)
-        self.label_11.setFont(font4)
-
-        self.gridLayout_2.addWidget(self.label_11, 0, 0, 1, 1, Qt.AlignTop)
-
-        self.label_13 = QLabel(self.cpu_info)
-        self.label_13.setObjectName(u"label_13")
-
-        self.gridLayout_2.addWidget(self.label_13, 2, 0, 1, 1)
-
-        self.label_18 = QLabel(self.cpu_info)
-        self.label_18.setObjectName(u"label_18")
-
-        self.gridLayout_2.addWidget(self.label_18, 3, 1, 1, 1)
-
         self.label_15 = QLabel(self.cpu_info)
         self.label_15.setObjectName(u"label_15")
 
         self.gridLayout_2.addWidget(self.label_15, 4, 0, 1, 1)
 
-        self.label_17 = QLabel(self.cpu_info)
-        self.label_17.setObjectName(u"label_17")
+        self.label_20 = QLabel(self.cpu_info)
+        self.label_20.setObjectName(u"label_20")
 
-        self.gridLayout_2.addWidget(self.label_17, 2, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.label_20, 5, 0, 1, 1)
+
+        self.label_18 = QLabel(self.cpu_info)
+        self.label_18.setObjectName(u"label_18")
+
+        self.gridLayout_2.addWidget(self.label_18, 3, 2, 1, 1)
+
+        self.label_21 = QLabel(self.cpu_info)
+        self.label_21.setObjectName(u"label_21")
+
+        self.gridLayout_2.addWidget(self.label_21, 5, 2, 1, 1)
+
+        self.label_14 = QLabel(self.cpu_info)
+        self.label_14.setObjectName(u"label_14")
+
+        self.gridLayout_2.addWidget(self.label_14, 3, 0, 1, 1)
+
+        self.label_13 = QLabel(self.cpu_info)
+        self.label_13.setObjectName(u"label_13")
+
+        self.gridLayout_2.addWidget(self.label_13, 2, 0, 1, 1)
 
         self.label_12 = QLabel(self.cpu_info)
         self.label_12.setObjectName(u"label_12")
@@ -392,27 +391,32 @@ class Ui_MainWindow(object):
         self.label_16 = QLabel(self.cpu_info)
         self.label_16.setObjectName(u"label_16")
 
-        self.gridLayout_2.addWidget(self.label_16, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.label_16, 1, 2, 1, 1)
 
-        self.label_14 = QLabel(self.cpu_info)
-        self.label_14.setObjectName(u"label_14")
+        self.label_17 = QLabel(self.cpu_info)
+        self.label_17.setObjectName(u"label_17")
 
-        self.gridLayout_2.addWidget(self.label_14, 3, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_17, 2, 2, 1, 1)
 
         self.label_19 = QLabel(self.cpu_info)
         self.label_19.setObjectName(u"label_19")
 
-        self.gridLayout_2.addWidget(self.label_19, 4, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.label_19, 4, 2, 1, 1)
 
-        self.label_20 = QLabel(self.cpu_info)
-        self.label_20.setObjectName(u"label_20")
+        self.label_11 = QLabel(self.cpu_info)
+        self.label_11.setObjectName(u"label_11")
+        font4 = QFont()
+        font4.setPointSize(16)
+        font4.setBold(True)
+        self.label_11.setFont(font4)
 
-        self.gridLayout_2.addWidget(self.label_20, 5, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_11, 0, 0, 1, 1, Qt.AlignTop)
 
-        self.label_21 = QLabel(self.cpu_info)
-        self.label_21.setObjectName(u"label_21")
+        self.widget_10 = QWidget(self.cpu_info)
+        self.widget_10.setObjectName(u"widget_10")
+        self.widget_10.setMinimumSize(QSize(150, 150))
 
-        self.gridLayout_2.addWidget(self.label_21, 5, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.widget_10, 1, 3, 3, 1)
 
 
         self.verticalLayout_4.addWidget(self.cpu_info)
@@ -1066,17 +1070,17 @@ class Ui_MainWindow(object):
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Disk Storage", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Network", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"CPU Info", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Cores", None))
-        self.label_18.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Base Frequency", None))
-        self.label_17.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Frequency", None))
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_21.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Threads", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Cores", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"CPU Name", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Threads", None))
+        self.label_17.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Frequency", None))
-        self.label_21.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"CPU Info", None))
         self.label_22.setText(QCoreApplication.translate("MainWindow", u"GPU Info", None))
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"GPU Name", None))
         self.label_26.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))

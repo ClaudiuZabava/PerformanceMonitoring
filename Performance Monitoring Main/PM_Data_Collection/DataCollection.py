@@ -9,6 +9,7 @@ import time
 import generalOsInfo
 
 
+
 # retriving remaining system general data
 _system_info = {}
 static_data = {}
@@ -26,10 +27,7 @@ def system_Information():
 
 
 
-# retriving real time data ( every 1 second)
-
-
-
+# retriving static data ( one time )
 def get_static_data_info():
     global static_data
     static_data['general_system_info'] = system_Information()
@@ -41,6 +39,7 @@ def get_static_data_info():
 
     return static_data if static_data else None
 
+# retriving real time data ( every 1 second)
 def get_real_time_data():
     global real_time_data
     while True:

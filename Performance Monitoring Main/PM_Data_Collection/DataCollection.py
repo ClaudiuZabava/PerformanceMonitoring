@@ -61,7 +61,7 @@ def get_real_time_data():
 #
 # get_real_time_data()
 
-print(system_Information())
+#print(system_Information())
 
 
 

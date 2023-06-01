@@ -62,7 +62,7 @@ def cpu_frequency():
 
 def cpu_usage():
     _cpu_usage = {}
-    cpu_usage = psutil.cpu_percent(interval=1)
+    cpu_usage = psutil.cpu_percent(interval=0.5)
     _cpu_usage['CPUUsage'] = cpu_usage
     _cpu_data['CPUUsage'] = _cpu_usage
     return _cpu_usage if _cpu_usage else None

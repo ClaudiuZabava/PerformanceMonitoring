@@ -23,5 +23,3 @@ def get_gpu_usage_data():
     return gpu_data if gpu_data else None
 
 
-print(get_gpu_info())
-

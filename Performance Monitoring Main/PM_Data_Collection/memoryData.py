@@ -55,6 +55,7 @@ def ram_info():
     _ram_base_data['RAMCapacityMaxGB'] = round(memory_array.MaxCapacity / (1024 ** 2), 2)
     _ram_base_data['RAMBaseSpeed'] = memory[0].Speed
     _ram_base_data['RAMSlots'] = memory_array.MemoryDevices
+    _ram_base_data['RAMTotalInstalledGB'] = round(psutil.virtual_memory().total / 1024 ** 3, 2)
 
     return _ram_base_data
 
@@ -63,8 +64,6 @@ def ram_usage_data():
     _ram = psutil.virtual_memory()
     _ram_usage = _ram.percent
     _ram_usage_data['RAMUsagePr'] = _ram_usage
-    _ram_total_gb = round(_ram.total / 1024 ** 3, 2)
-    _ram_usage_data['RAMTotalGB'] = _ram_total_gb
     _ram_used_gb = round(_ram.used / 1024 ** 3, 2)
     _ram_usage_data['RAMUsedGB'] = _ram_used_gb
     _ram_free_gb = round(_ram.free / 1024 ** 3, 2)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AppWlxoJN.ui'
+## Form generated from reading UI file 'AppuqAuOQ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QHeaderView, QLabel, QMainWindow, QPushButton,
-    QSizePolicy, QStackedWidget, QTableWidget, QTableWidgetItem,
-    QVBoxLayout, QWidget)
+    QHeaderView, QLabel, QMainWindow, QPlainTextEdit,
+    QPushButton, QScrollArea, QSizePolicy, QStackedWidget,
+    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 import icons_rc
 
 class Ui_MainWindow(object):
@@ -490,30 +490,30 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addWidget(self.label_30, 1, 0, 1, 1)
 
-        self.label_33 = QLabel(self.gpu_usage)
-        self.label_33.setObjectName(u"label_33")
+        self.label_32 = QLabel(self.gpu_usage)
+        self.label_32.setObjectName(u"label_32")
 
-        self.gridLayout_4.addWidget(self.label_33, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.label_32, 3, 0, 1, 1)
 
         self.label_31 = QLabel(self.gpu_usage)
         self.label_31.setObjectName(u"label_31")
 
         self.gridLayout_4.addWidget(self.label_31, 2, 0, 1, 1)
 
-        self.label_34 = QLabel(self.gpu_usage)
-        self.label_34.setObjectName(u"label_34")
+        self.widget_gpu_util = QWidget(self.gpu_usage)
+        self.widget_gpu_util.setObjectName(u"widget_gpu_util")
 
-        self.gridLayout_4.addWidget(self.label_34, 2, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.widget_gpu_util, 2, 1, 1, 1)
 
-        self.label_32 = QLabel(self.gpu_usage)
-        self.label_32.setObjectName(u"label_32")
+        self.widget_gpu_temp = QWidget(self.gpu_usage)
+        self.widget_gpu_temp.setObjectName(u"widget_gpu_temp")
 
-        self.gridLayout_4.addWidget(self.label_32, 3, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.widget_gpu_temp, 1, 1, 1, 1)
 
-        self.label_35 = QLabel(self.gpu_usage)
-        self.label_35.setObjectName(u"label_35")
+        self.widget_gpu_mem = QWidget(self.gpu_usage)
+        self.widget_gpu_mem.setObjectName(u"widget_gpu_mem")
 
-        self.gridLayout_4.addWidget(self.label_35, 3, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.widget_gpu_mem, 3, 1, 1, 1)
 
 
         self.verticalLayout_5.addWidget(self.gpu_usage)
@@ -643,51 +643,61 @@ class Ui_MainWindow(object):
         self.frame_3.setFrameShadow(QFrame.Raised)
         self.gridLayout_6 = QGridLayout(self.frame_3)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.label_63 = QLabel(self.frame_3)
-        self.label_63.setObjectName(u"label_63")
+        self.label_58 = QLabel(self.frame_3)
+        self.label_58.setObjectName(u"label_58")
 
-        self.gridLayout_6.addWidget(self.label_63, 5, 1, 1, 1)
-
-        self.label_60 = QLabel(self.frame_3)
-        self.label_60.setObjectName(u"label_60")
-
-        self.gridLayout_6.addWidget(self.label_60, 2, 1, 1, 1)
-
-        self.label_62 = QLabel(self.frame_3)
-        self.label_62.setObjectName(u"label_62")
-
-        self.gridLayout_6.addWidget(self.label_62, 4, 1, 1, 1)
-
-        self.label_61 = QLabel(self.frame_3)
-        self.label_61.setObjectName(u"label_61")
-
-        self.gridLayout_6.addWidget(self.label_61, 3, 1, 1, 1)
+        self.gridLayout_6.addWidget(self.label_58, 7, 0, 1, 1)
 
         self.label_57 = QLabel(self.frame_3)
         self.label_57.setObjectName(u"label_57")
 
         self.gridLayout_6.addWidget(self.label_57, 3, 0, 1, 1)
 
-        self.label_58 = QLabel(self.frame_3)
-        self.label_58.setObjectName(u"label_58")
+        self.label_55 = QLabel(self.frame_3)
+        self.label_55.setObjectName(u"label_55")
+        self.label_55.setFont(font4)
 
-        self.gridLayout_6.addWidget(self.label_58, 5, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.label_55, 1, 0, 1, 1, Qt.AlignTop)
 
-        self.label_59 = QLabel(self.frame_3)
-        self.label_59.setObjectName(u"label_59")
+        self.label_63 = QLabel(self.frame_3)
+        self.label_63.setObjectName(u"label_63")
 
-        self.gridLayout_6.addWidget(self.label_59, 4, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.label_63, 7, 1, 1, 1)
 
         self.label_56 = QLabel(self.frame_3)
         self.label_56.setObjectName(u"label_56")
 
         self.gridLayout_6.addWidget(self.label_56, 2, 0, 1, 1)
 
-        self.label_55 = QLabel(self.frame_3)
-        self.label_55.setObjectName(u"label_55")
-        self.label_55.setFont(font4)
+        self.label_62 = QLabel(self.frame_3)
+        self.label_62.setObjectName(u"label_62")
 
-        self.gridLayout_6.addWidget(self.label_55, 1, 0, 1, 1, Qt.AlignTop)
+        self.gridLayout_6.addWidget(self.label_62, 6, 1, 1, 1)
+
+        self.label_59 = QLabel(self.frame_3)
+        self.label_59.setObjectName(u"label_59")
+
+        self.gridLayout_6.addWidget(self.label_59, 6, 0, 1, 1)
+
+        self.label_61 = QLabel(self.frame_3)
+        self.label_61.setObjectName(u"label_61")
+
+        self.gridLayout_6.addWidget(self.label_61, 3, 1, 1, 1)
+
+        self.label_60 = QLabel(self.frame_3)
+        self.label_60.setObjectName(u"label_60")
+
+        self.gridLayout_6.addWidget(self.label_60, 2, 1, 1, 1)
+
+        self.label_66 = QLabel(self.frame_3)
+        self.label_66.setObjectName(u"label_66")
+
+        self.gridLayout_6.addWidget(self.label_66, 4, 0, 1, 1)
+
+        self.label_33 = QLabel(self.frame_3)
+        self.label_33.setObjectName(u"label_33")
+
+        self.gridLayout_6.addWidget(self.label_33, 4, 1, 1, 1)
 
 
         self.verticalLayout_7.addWidget(self.frame_3)
@@ -709,30 +719,20 @@ class Ui_MainWindow(object):
 
         self.gridLayout_7.addWidget(self.label_65, 1, 0, 1, 1)
 
-        self.label_68 = QLabel(self.frame_4)
-        self.label_68.setObjectName(u"label_68")
-
-        self.gridLayout_7.addWidget(self.label_68, 1, 1, 1, 1)
-
-        self.label_66 = QLabel(self.frame_4)
-        self.label_66.setObjectName(u"label_66")
-
-        self.gridLayout_7.addWidget(self.label_66, 2, 0, 1, 1)
-
-        self.label_69 = QLabel(self.frame_4)
-        self.label_69.setObjectName(u"label_69")
-
-        self.gridLayout_7.addWidget(self.label_69, 2, 1, 1, 1)
-
         self.label_67 = QLabel(self.frame_4)
         self.label_67.setObjectName(u"label_67")
 
         self.gridLayout_7.addWidget(self.label_67, 3, 0, 1, 1)
 
-        self.label_70 = QLabel(self.frame_4)
-        self.label_70.setObjectName(u"label_70")
+        self.widget_ram_usage = QWidget(self.frame_4)
+        self.widget_ram_usage.setObjectName(u"widget_ram_usage")
 
-        self.gridLayout_7.addWidget(self.label_70, 3, 1, 1, 1)
+        self.gridLayout_7.addWidget(self.widget_ram_usage, 1, 1, 1, 1)
+
+        self.widget_ram_used = QWidget(self.frame_4)
+        self.widget_ram_used.setObjectName(u"widget_ram_used")
+
+        self.gridLayout_7.addWidget(self.widget_ram_used, 3, 1, 1, 1)
 
 
         self.verticalLayout_7.addWidget(self.frame_4)
@@ -891,6 +891,7 @@ class Ui_MainWindow(object):
         __qtablewidgetitem4.setForeground(brush);
         self.tableWidget.setHorizontalHeaderItem(4, __qtablewidgetitem4)
         self.tableWidget.setObjectName(u"tableWidget")
+        self.tableWidget.setStyleSheet(u"color: rgb(255, 255, 255);")
 
         self.verticalLayout_11.addWidget(self.tableWidget, 0, Qt.AlignTop)
 
@@ -974,8 +975,76 @@ class Ui_MainWindow(object):
 
         self.right_frame = QFrame(self.main_body_frame)
         self.right_frame.setObjectName(u"right_frame")
+        self.right_frame.setMinimumSize(QSize(400, 0))
         self.right_frame.setFrameShape(QFrame.StyledPanel)
         self.right_frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_12 = QVBoxLayout(self.right_frame)
+        self.verticalLayout_12.setSpacing(0)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.frame_10 = QFrame(self.right_frame)
+        self.frame_10.setObjectName(u"frame_10")
+        self.frame_10.setMinimumSize(QSize(0, 0))
+        self.frame_10.setStyleSheet(u"background-color: rgb(80, 80, 80);\n"
+"color: rgb(255, 255, 255);")
+        self.frame_10.setFrameShape(QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QFrame.Raised)
+        self.gridLayout_8 = QGridLayout(self.frame_10)
+        self.gridLayout_8.setObjectName(u"gridLayout_8")
+        self.pushButton_13 = QPushButton(self.frame_10)
+        self.pushButton_13.setObjectName(u"pushButton_13")
+
+        self.gridLayout_8.addWidget(self.pushButton_13, 1, 0, 1, 1, Qt.AlignLeft|Qt.AlignTop)
+
+        self.pushButton_14 = QPushButton(self.frame_10)
+        self.pushButton_14.setObjectName(u"pushButton_14")
+
+        self.gridLayout_8.addWidget(self.pushButton_14, 1, 1, 1, 1)
+
+        self.stackedWidget_2 = QStackedWidget(self.frame_10)
+        self.stackedWidget_2.setObjectName(u"stackedWidget_2")
+        self.stackedWidget_2.setMinimumSize(QSize(0, 0))
+        self.statistics = QWidget()
+        self.statistics.setObjectName(u"statistics")
+        self.stackedWidget_2.addWidget(self.statistics)
+        self.assistant = QWidget()
+        self.assistant.setObjectName(u"assistant")
+        self.gridLayout_12 = QGridLayout(self.assistant)
+        self.gridLayout_12.setObjectName(u"gridLayout_12")
+        self.scrollArea = QScrollArea(self.assistant)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setMinimumSize(QSize(0, 400))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 358, 445))
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.gridLayout_12.addWidget(self.scrollArea, 0, 0, 1, 2)
+
+        self.plainTextEdit = QPlainTextEdit(self.assistant)
+        self.plainTextEdit.setObjectName(u"plainTextEdit")
+        self.plainTextEdit.setMaximumSize(QSize(16777215, 30))
+        self.plainTextEdit.setStyleSheet(u"color: rgb(0, 0, 0);")
+
+        self.gridLayout_12.addWidget(self.plainTextEdit, 1, 0, 1, 1)
+
+        self.pushButton_15 = QPushButton(self.assistant)
+        self.pushButton_15.setObjectName(u"pushButton_15")
+        icon11 = QIcon()
+        icon11.addFile(u"icons/icons8-paper-plane-48.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_15.setIcon(icon11)
+        self.pushButton_15.setIconSize(QSize(24, 24))
+
+        self.gridLayout_12.addWidget(self.pushButton_15, 1, 1, 1, 1)
+
+        self.stackedWidget_2.addWidget(self.assistant)
+
+        self.gridLayout_8.addWidget(self.stackedWidget_2, 2, 0, 1, 2)
+
+
+        self.verticalLayout_12.addWidget(self.frame_10)
+
 
         self.horizontalLayout_8.addWidget(self.right_frame)
 
@@ -1043,6 +1112,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.setDefault(False)
         self.pushButton.setDefault(False)
         self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget_2.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1090,11 +1160,8 @@ class Ui_MainWindow(object):
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_29.setText(QCoreApplication.translate("MainWindow", u"GPU Usage", None))
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"Temperature", None))
-        self.label_33.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_31.setText(QCoreApplication.translate("MainWindow", u"Utilization", None))
-        self.label_34.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_32.setText(QCoreApplication.translate("MainWindow", u"Used Memory", None))
-        self.label_35.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_31.setText(QCoreApplication.translate("MainWindow", u"Utilization", None))
         self.label_36.setText(QCoreApplication.translate("MainWindow", u"System Informations", None))
         self.label_37.setText(QCoreApplication.translate("MainWindow", u"Operating System", None))
         self.label_46.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
@@ -1114,22 +1181,20 @@ class Ui_MainWindow(object):
         self.label_53.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_45.setText(QCoreApplication.translate("MainWindow", u"GPU", None))
         self.label_54.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_63.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_60.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_62.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_61.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_57.setText(QCoreApplication.translate("MainWindow", u"Maximum Capacity", None))
         self.label_58.setText(QCoreApplication.translate("MainWindow", u"Slots", None))
-        self.label_59.setText(QCoreApplication.translate("MainWindow", u"Base Speed", None))
-        self.label_56.setText(QCoreApplication.translate("MainWindow", u"RAM Type", None))
+        self.label_57.setText(QCoreApplication.translate("MainWindow", u"Maximum Capacity", None))
         self.label_55.setText(QCoreApplication.translate("MainWindow", u"RAM Info", None))
+        self.label_63.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_56.setText(QCoreApplication.translate("MainWindow", u"RAM Type", None))
+        self.label_62.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_59.setText(QCoreApplication.translate("MainWindow", u"Base Speed", None))
+        self.label_61.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_60.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_66.setText(QCoreApplication.translate("MainWindow", u"Total Memory", None))
+        self.label_33.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_64.setText(QCoreApplication.translate("MainWindow", u"RAM Usage", None))
         self.label_65.setText(QCoreApplication.translate("MainWindow", u"Usage Percentage", None))
-        self.label_68.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_66.setText(QCoreApplication.translate("MainWindow", u"Total Memory", None))
-        self.label_69.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_67.setText(QCoreApplication.translate("MainWindow", u"Used Memory", None))
-        self.label_70.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_71.setText(QCoreApplication.translate("MainWindow", u"Disk Info", None))
         self.label_72.setText(QCoreApplication.translate("MainWindow", u"Model", None))
         self.label_78.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
@@ -1165,6 +1230,9 @@ class Ui_MainWindow(object):
         self.label_104.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_101.setText(QCoreApplication.translate("MainWindow", u"Packages Received", None))
         self.label_105.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.pushButton_13.setText(QCoreApplication.translate("MainWindow", u"Statistics Generator", None))
+        self.pushButton_14.setText(QCoreApplication.translate("MainWindow", u"Assistant", None))
+        self.pushButton_15.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Version 1.0 | Alpha", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"?", None))
     # retranslateUi

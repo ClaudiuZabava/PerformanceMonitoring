@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/icons8-paper-plane-48.png</file>
     <file>icons/icons8-menu-48.png</file>
     <file>icons/icons8-male-user-48.png</file>
     <file>icons/icons8-maximize-window-48.png</file>

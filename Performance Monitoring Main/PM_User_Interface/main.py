@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from assistantPanel import *
 
@@ -18,10 +19,11 @@ sys.path.insert(0, data_collection_dir)
 from cpuData import cpu_info, cpu_frequency, cpu_usage
 from gpuData import get_gpu_info, get_gpu_usage_data
 from memoryData import ram_info, ram_usage_data
-from diskData import all_disks_mem_data, disk_read_write_speed
 from driveInfo import get_disk_info
 from DataCollection import system_Information
 from diskData import all_disks_mem_data, disk_read_write_speed
+from networkData import net_stat
+from runningProcess import active_proc, terminate_process_and_children, express_kill
 
 
 
@@ -32,6 +34,12 @@ class WorkerThread(QThread):
     freqChanged = Signal(str)
     tempChanged = Signal(float)
     memChanged = Signal(float)
+    readChanged = Signal(str)
+    writeChanged = Signal(str)
+    btSentChanged = Signal(str)
+    btRecvChanged = Signal(str)
+    pkSentChanged = Signal(str)
+    pkRecvChanged = Signal(str)
 
     def __init__(self, data_type, parent=None):
         super().__init__(parent)
@@ -60,20 +68,159 @@ class WorkerThread(QThread):
                 self.valueChanged.emit(ram_usage)
                 self.memChanged.emit(ram_mem)
                 sleep_time = 200
+            elif self.data_type == 'NET':
+                net_usage = net_stat()
+                self.btSentChanged.emit(str(net_usage['bytes_sent_per_second']) + '/s')
+                self.btRecvChanged.emit(str(net_usage['bytes_received_per_second']) + '/s')
+                self.pkSentChanged.emit(str(net_usage['packets_sent_per_second']) + '/s')
+                self.pkRecvChanged.emit(str(net_usage['packets_received_per_second']) + '/s')
+                sleep_time = 500
+            elif self.data_type == 'DISK':
+                disk_read, disk_write = disk_read_write_speed()
+                if disk_read >= 1:
+                    disk_read = str(round(disk_read,2)) + " MB/s"
+                else:
+                    disk_read = str(round(disk_read * 1024,2)) + " kB/s"
+
+                if disk_write >=1:
+                    disk_write = str(round(disk_write, 2)) + " MB/s"
+                else:
+                    disk_write = str(round(disk_write * 1024,2)) + " kB/s"
+
+                self.readChanged.emit(disk_read)
+                self.writeChanged.emit(disk_write)
+                sleep_time = 500
             self.msleep(sleep_time)
 
 
+
+class ProcessTableUpdaterThread(QThread):
+    processListUpdated = Signal(list)  # Emit acest semnal atunci cand lista de procese este actualizata
+    old_process_list = []  # Lista de procese de la ultima actualizare
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        while True:
+            process_list = active_proc()
+            if self.old_process_list != process_list:
+                print(True)
+                self.processListUpdated.emit(process_list)
+                self.old_process_list = process_list
+            self.msleep(10000)
+
+
 class BotThread(QThread):
+    tt = ["Hello"]
+    bdir ='D:/' if os.path.exists('D:/') else 'C:/' if os.path.exists('C:/') else 'E:/'
+    message = ""
     botMessage = Signal(str)
     botSemaphore = QSemaphore(0)  # Inițializare semafor cu 0, ceea ce înseamnă că este blocat
+
+
+    def actions(self, k):
+        ct = '[' + datetime.now().strftime('%H:%M:%S') + ']'
+        if self.tt[k].upper() == "PLAY":
+            if len(self.tt) > (k+1):
+                target = ' '.join(self.tt[(k+1):])
+                self.message = "💻"+ ct+ " I'll play: " + target
+                go_youtube(target)
+            else:
+                self.message ="💻"+ ct+" Type Play then the name of the song / video you would like to play, sir!"
+                pass
+        elif self.tt[k].upper() == "GO":
+            if len(self.tt) > (k+1):
+                target = ' '.join(self.tt[(k+1):])
+                self.message = "💻"+ ct+" I'll go to: " + target
+                go_google(target)
+            else:
+                self.message ="💻"+ ct+" Type Go and the destination site name, sir!"
+                pass
+        elif self.tt[k].upper() == "WIKI":
+            if len(self.tt) > (k+1):
+                target = '_'.join(self.tt[(k+1):])
+                self.message ="💻"+ ct+" I'll wiki: " + target
+                go_wiki(target)
+            else:
+                self.message ="💻"+ ct+" Type Wiki and the text you would like to search on Wikipedia, sir!"
+                pass
+        elif self.tt[k].upper() == "SEARCH":
+            if len(self.tt) > (k+1):
+                target = ' '.join(self.tt[(k+1):])
+                self.message ="💻"+ ct+" I'll search: " + target
+                target = '%20'.join(self.tt[(k + 1):])
+                search_google(target)
+            else:
+                self.message = "💻"+ ct+" Type Search and the text you would like to search on google, sir!"
+                pass
+        if self.tt[k].upper() == "CHANGE":
+            if len(self.tt) > (k+2) and self.tt[(k+1)].upper() == "TO":
+                self.bdir = self.tt[(k+2)]+':'+'/'
+                self.message = "💻"+ ct+" I'll change current directory to: " + self.bdir
+            else:
+                self.message ="💻"+ ct+" Type the name of the partition you want to look into. "
+                pass
+        elif self.tt[k].upper() == "FIND":
+            if len(self.tt) > (k+2):
+                check=0
+                ext = self.tt[(k+2)]
+                fname = self.tt[(k+1)]+'.'+ext
+                self.message ="💻"+ ct+" I found this file in those folders: "
+                for roots, dirs, files in os.walk(self.bdir):
+                    for file in files:
+                        if file.endswith(ext) and str(file).upper() == fname.upper():
+                            check+=1
+                            print(roots + '\ ' + str(file))
+                            os.startfile(str(roots))
+                if check ==0:
+                    self.message = "💻"+ ct+" Looks like this file doesn't exist on this partition"
+
+            else:
+                self.message = "💻"+ ct+" Please specify the file name and extension (eg: run.exe)"
+                pass
+
+    def retrive(self):
+        ct = '[' + datetime.now().strftime('%H:%M:%S') + ']'
+        t=' '.join(self.tt) if len(self.tt)>1 else self.tt[0]
+        if t.upper() in open(os.getcwd()+"/Vocabulary/Hi.txt", 'r+').read():
+            self.message = "💻"+ ct+" Hello, Sir!"
+
+        # elif t.upper() in open(os.getcwd()+"/Vocabulary/WhatJoke.txt", 'r+').read() and jcheck == 1:
+        #     self.message = tell_a_joke2()
+        #
+        # elif t.upper() in open(os.getcwd()+"/Vocabulary/Hru.txt", 'r+').read():
+        #     self.message = "💻"+ ct+" Everything's good, Sir! How about you?"
+        elif len(self.tt)>1:
+            if self.tt[0].upper() in open(os.getcwd()+"/Vocabulary/Action.txt").read():
+                if len(self.tt)>2 and self.tt[0].upper() == "LET" and self.tt[1].upper() == "S":
+                    self.actions(2)
+                else:
+                    self.actions(0)
+                    pass
+            # elif self.tt[0].upper() == "HEAR" and self.tt[1].upper() == "ME":
+            #     voice_cmd()
+            # elif t.lower() == "tell me a joke":
+            #     self.message = tell_a_joke1()
+            else:
+                self.message = "💻"+ ct+" Hmm, I don't think I understand those words, sir!"
+                pass
+        else:
+            self.message = "💻"+ ct+" Hmm, I don't think I understand those words, sir!"
+
+            say = " Don't worry. I'll save them somewhere to learn later."
+            pass
 
     def run(self):
         while True:
             self.botSemaphore.acquire()  # Așteaptă până când semaforul este deblocat
 
-            message = welcome_text()
-            self.botMessage.emit(message)
-    def unlock(self):  # Apelat când vrei ca botul să scrie un mesaj
+            self.retrive()
+            self.botMessage.emit(self.message)
+    def unlock(self, text):  # Apelat când vrei ca botul să scrie un mesaj
+        if text == None or text == "":
+            text = "Hello"
+        self.tt = re.split('\W+', text)
         self.botSemaphore.release()  # Deblocare semafor
 
 
@@ -113,6 +260,7 @@ class MainApp(QMainWindow):
             self.ui.label_9.setSizePolicy(self.ui.label_9.sizePolicy().Policy.Preferred, self.ui.label_9.sizePolicy().Policy.Preferred)
             self.ui.label_10.setSizePolicy(self.ui.label_10.sizePolicy().Policy.Preferred, self.ui.label_10.sizePolicy().Policy.Preferred)
 
+
     def add_text_to_scrollarea(self, bot_text=None):
         state=0
         if bot_text is None:
@@ -131,7 +279,57 @@ class MainApp(QMainWindow):
         # Sterge textul initial din QPlainTextEdit
         self.ui.plainTextEdit.clear()
         if state == 0:
-            self.botThread.unlock()
+            self.botThread.unlock(text)
+
+    def add_process_to_table(self, process_info):
+        self.ui.tableWidget2.insertRow(0)
+
+        self.ui.tableWidget2.setItem(0, 0, QTableWidgetItem(str(process_info['PID'])))
+        self.ui.tableWidget2.setItem(0, 1, QTableWidgetItem(process_info['Name']))
+        self.ui.tableWidget2.setItem(0, 2, QTableWidgetItem(process_info['Status']))
+        self.ui.tableWidget2.setItem(0, 3, QTableWidgetItem(str(process_info['Memory(MB)'])))
+
+        button = QPushButton("Click Me")
+        button.setStyleSheet("background-color: #505050")
+        button.clicked.connect(lambda: self.handle_button_click(process_info['PID']))
+        self.ui.tableWidget2.setCellWidget(0, 4, button)
+
+    def update_process_table(self, process_list):
+        self.ui.tableWidget2.setRowCount(0)
+        for process in process_list:
+            self.add_process_to_table(process)  # Adauga fiecare proces in tabel
+
+    def handle_button_click(self,pid):
+        result = terminate_process_and_children(pid)
+        if result == 1020:
+
+            self.pending_kill_pid = pid
+            self.ui.label_70.setText("This PID:{" + str(pid) + "} is A SYSTEM or a System-Related process. Are you sure you want to kill it?")
+            self.ui.pushButton_16.show()
+            self.ui.pushButton_17.show()
+        elif result == 0:
+            self.ui.label_70.setText("Error! Could not kill the process with PID:{" + str(pid) + "}")
+        else:
+            self.ui.pushButton_16.hide()
+            self.ui.pushButton_17.hide()
+            self.ui.label_70.setText("Process with PID:{" + str(pid) + "} has been killed!")
+
+    def handle_express_kill_button_click(self):
+        if self.pending_kill_pid is not None:
+            res = express_kill(self.pending_kill_pid)
+            if res != 1:
+                self.ui.label_70.setText("Error! Could not kill the process with PID:{" + str(self.pending_kill_pid) + "}")
+            else:
+                self.ui.label_70.setText("Process with PID:{" + str(self.pending_kill_pid) + "} has been killed!")
+            self.pending_kill_pid = None
+        self.ui.pushButton_16.hide()
+        self.ui.pushButton_17.hide()
+
+    def abort_kill(self):
+        self.pending_kill_pid = None
+        self.ui.pushButton_16.hide()
+        self.ui.pushButton_17.hide()
+        self.ui.label_70.setText("")
 
     def mousePressEvent(self, event):
         if event.buttons() == Qt.MouseButton.LeftButton:
@@ -151,6 +349,30 @@ class MainApp(QMainWindow):
             self.m_mousePressPosition = event.globalPosition()
 
     @Slot(str)
+    def bt_sent(self, val):
+        self.ui.label_102.setText(val)
+
+    @Slot(str)
+    def bt_recv(self, val):
+        self.ui.label_103.setText(val)
+
+    @Slot(str)
+    def pk_sent(self, val):
+        self.ui.label_104.setText(val)
+
+    @Slot(str)
+    def pk_recv(self, val):
+        self.ui.label_105.setText(val)
+
+    @Slot(str)
+    def read_speed(self, val):
+        self.ui.label_35.setText(val)
+
+    @Slot(str)
+    def write_speed(self, val):
+        self.ui.label_69.setText(val)
+
+    @Slot(str)
     def update_freq(self, freq):
         self.ui.label_21.setText(freq)
 
@@ -164,6 +386,7 @@ class MainApp(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
+        self.process_snapshot = {}
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.resize(1200, 600)
@@ -189,6 +412,14 @@ class MainApp(QMainWindow):
 
         QSizeGrip(self.ui.size_grip)
 
+        self.ui.label_70.setText("")
+        self.ui.pushButton_16.hide()
+        self.ui.pushButton_17.hide()
+
+        self.ui.pushButton_16.clicked.connect(lambda: self.handle_express_kill_button_click())
+        self.ui.pushButton_17.clicked.connect(lambda: self.abort_kill())
+        self.pending_kill_pid = None
+
 
         # Navigate between pages using buttons
         self.ui.pushButton_12.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.GPU))
@@ -197,9 +428,11 @@ class MainApp(QMainWindow):
         self.ui.pushButton_8.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Disk))
         self.ui.pushButton_10.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Network))
         self.ui.pushButton_6.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.CPU))
-
+        self.ui.pushButton_11.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Processes))
         self.ui.pushButton_13.clicked.connect(lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.statistics))
         self.ui.pushButton_14.clicked.connect(lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.assistant))
+
+
 
         display_info={}
         # Getting Real Data - CPU:
@@ -249,18 +482,16 @@ class MainApp(QMainWindow):
 
         # Getting Real Data - Disk:
         display_info['disk'] = all_disks_mem_data()
-        self.ui.tableWidget.setRowCount(len(display_info['disk']))
         self.ui.tableWidget.setColumnCount(5)
 
         for partition_name, partition_data in display_info['disk'].items():
             if isinstance(partition_data, dict):  # asigura-te ca partition_data este un dictionar
-                self.ui.tableWidget.insertRow(self.ui.tableWidget.rowCount())
-                i = self.ui.tableWidget.rowCount() - 1
-                self.ui.tableWidget.setItem(i, 0, QTableWidgetItem(partition_name))
-                self.ui.tableWidget.setItem(i, 1, QTableWidgetItem(str(partition_data['UsedPer'])))
-                self.ui.tableWidget.setItem(i, 2, QTableWidgetItem(str(round(partition_data['FreeMem']/1024**3 , 2))))
-                self.ui.tableWidget.setItem(i, 3, QTableWidgetItem(str(round(partition_data['UsedMem']/1024**3 , 2))))
-                self.ui.tableWidget.setItem(i, 4, QTableWidgetItem(str(round(partition_data['PartitionMem']/1024**3 , 2))))
+                self.ui.tableWidget.insertRow(0)
+                self.ui.tableWidget.setItem(0, 0, QTableWidgetItem(partition_name))
+                self.ui.tableWidget.setItem(0, 1, QTableWidgetItem(str(partition_data['UsedPer'])))
+                self.ui.tableWidget.setItem(0, 2, QTableWidgetItem(str(round(partition_data['FreeMem']/1024**3 , 2))))
+                self.ui.tableWidget.setItem(0, 3, QTableWidgetItem(str(round(partition_data['UsedMem']/1024**3 , 2))))
+                self.ui.tableWidget.setItem(0, 4, QTableWidgetItem(str(round(partition_data['PartitionMem']/1024**3 , 2))))
 
         for i in reversed(range(self.ui.tableWidget.rowCount())):
             is_row_empty = all(
@@ -269,7 +500,14 @@ class MainApp(QMainWindow):
             if is_row_empty:
                 self.ui.tableWidget.removeRow(i)
 
-
+        # Prepare Table for Processes
+        headers = ["PID", "Process Name", "Status", "Memory(MB)", "Actions"]
+        for i in range(len(headers)):
+            header_item = QTableWidgetItem(headers[i])
+            brush = QBrush(QColor(0, 0, 0))
+            brush.setStyle(Qt.SolidPattern)
+            header_item.setForeground(brush)
+            self.ui.tableWidget2.setHorizontalHeaderItem(i, header_item)
 
 
 
@@ -331,6 +569,29 @@ class MainApp(QMainWindow):
         self.worker_thread3.valueChanged.connect(ram_usage_bar.setValue)
         self.worker_thread3.memChanged.connect(ram_used_mem.setValue)
         self.worker_thread3.start()
+
+
+        # Show changes on NET:
+
+        self.worker_thread4 = WorkerThread('NET')
+        self.worker_thread4.btSentChanged.connect(self.bt_sent)
+        self.worker_thread4.btRecvChanged.connect(self.bt_recv)
+        self.worker_thread4.pkSentChanged.connect(self.pk_sent)
+        self.worker_thread4.pkRecvChanged.connect(self.pk_recv)
+        self.worker_thread4.start()
+
+        # Show changes on DISK:
+        self.worker_thread5 = WorkerThread('DISK')
+        self.worker_thread5.readChanged.connect(self.read_speed)
+        self.worker_thread5.writeChanged.connect(self.write_speed)
+        self.worker_thread5.start()
+
+
+        # Show changes on Processes:
+
+        self.ProcessesThread = ProcessTableUpdaterThread()
+        self.ProcessesThread.processListUpdated.connect(self.update_process_table)
+        self.ProcessesThread.start()
 
 
 

@@ -30,3 +30,4 @@ def net_stat(interval=1):
     net_data['packets_received_per_second'] = packets_received_per_second
 
     return net_data
+

@@ -1,45 +1,117 @@
-#include <Windows.h>
-#include <WinIoCtl.h>
-#include <iostream>
+#include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main()
-{
-    HANDLE hDevice = CreateFile("\\\\.\\PhysicalDrive0", GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
-    if (hDevice == INVALID_HANDLE_VALUE)
-    {
-        std::cerr << "Failed to open device\n";
-        return 1;
+int main(void) {
+    DIR *dirp;
+    struct dirent *directory;
+
+    dirp = opendir("/proc");
+    if (dirp) {
+        while ((directory = readdir(dirp)) != NULL) {
+            if (directory->d_type == DT_DIR && strcmp(directory->d_name, ".") != 0 && strcmp(directory->d_name, "..") != 0 &&
+                (directory->d_name[0] >= '0' && directory->d_name[0] <= '9')) {
+                printf("PID: %s\n", directory->d_name);
+
+                char cmdline_file[256] = {0};
+                snprintf(cmdline_file, sizeof(cmdline_file), "/proc/%s/cmdline", directory->d_name);
+
+                FILE *fp = fopen(cmdline_file, "r");
+                if (fp) {
+                    char cmdline[256];
+                    if (fgets(cmdline, sizeof(cmdline), fp) != NULL) {
+                        printf("Nume: %s\n", cmdline);
+                    }
+                    fclose(fp);
+                }
+
+                printf("\n");
+            }
+        }
+
+        closedir(dirp);
     }
 
-    STORAGE_PROPERTY_QUERY query{};
-    query.PropertyId = StorageDeviceMediaType;
-    query.QueryType = PropertyStandardQuery;
-
-    char outputBuffer[sizeof(STORAGE_PROPERTY_QUERY) + sizeof(STORAGE_MEDIA_TYPE)];
-    DWORD bytesReturned;
-
-    if (DeviceIoControl(hDevice, IOCTL_STORAGE_QUERY_PROPERTY, &query, sizeof(query), &outputBuffer, sizeof(outputBuffer), &bytesReturned, nullptr))
-    {
-        STORAGE_MEDIA_TYPE mediaType = *reinterpret_cast<STORAGE_MEDIA_TYPE*>(outputBuffer + sizeof(STORAGE_PROPERTY_QUERY));
-        if (mediaType == FixedMedia)
-        {
-            std::cout << "Hard Disk Drive\n";
-        }
-        else if (mediaType == SSDMedia)
-        {
-            std::cout << "Solid State Drive\n";
-        }
-        else
-        {
-            std::cout << "Unknown media type\n";
-        }
-    }
-    else
-    {
-        std::cerr << "Failed to query device property\n";
-    }
-
-    CloseHandle(hDevice);
-
-    return 0;
+    return(0);
 }
+
+//#include <windows.h>
+//#include <cstdio>
+//#include <tchar.h>
+//#include <psapi.h>
+//#include <tlhelp32.h>
+//#include <sddl.h>
+//
+//
+//void PrintProcessInfo(DWORD processID) {
+//    TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+//    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+//
+//    if (NULL != hProcess) {
+//        HMODULE hMod;
+//        DWORD cbNeeded;
+//        if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+//            GetModuleBaseName(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(TCHAR));
+//        }
+//
+//        PROCESS_MEMORY_COUNTERS pmc;
+//        if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
+//            printf("\nProcess ID: %u\n", processID);
+//            _tprintf(TEXT("Process Name: %s\n"), szProcessName);
+//            printf("Memory Usage: %u\n", pmc.WorkingSetSize);
+//        }
+//        CloseHandle(hProcess);
+//    }
+//}
+//
+//void ListProcesses() {
+//    DWORD aProcesses[1024], cbNeeded, cProcesses;
+//
+//    if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded)) {
+//        return;
+//    }
+//
+//    cProcesses = cbNeeded / sizeof(DWORD);
+//    for (unsigned int i = 0; i < cProcesses; i++) {
+//        if (aProcesses[i] != 0) {
+//            PrintProcessInfo(aProcesses[i]);
+//        }
+//    }
+//}
+//
+//void TerminateProcessAndChildren(DWORD processID) {
+//    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+//    PROCESSENTRY32 pe = { 0 };
+//    pe.dwSize = sizeof(PROCESSENTRY32);
+//
+//    if (Process32First(hSnap, &pe)) {
+//        do {
+//            if (pe.th32ParentProcessID == processID) {
+//                TerminateProcessAndChildren(pe.th32ProcessID);
+//            }
+//        } while (Process32Next(hSnap, &pe));
+//    }
+//
+//    HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, processID);
+//    if (hProcess != NULL) {
+//        TerminateProcess(hProcess, 0);
+//        CloseHandle(hProcess);
+//    }
+//    CloseHandle(hSnap);
+//}
+//
+//int main() {
+//    printf("Listing processes...\n");
+//    ListProcesses();
+//
+////    DWORD pid;
+////    printf("Enter PID to terminate: ");
+////    scanf("%d", &pid);
+////
+////    printf("Terminating process %d and its children...\n", pid);
+////    TerminateProcessAndChildren(pid);
+//
+//
+//    return 0;
+//}

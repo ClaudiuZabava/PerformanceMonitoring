@@ -15,11 +15,13 @@ def get_gpu_info():
 def get_gpu_usage_data():
     gpu_stats = gpustat.GPUStatCollection.new_query()
     gpu_data = {}
+
     for gpu in gpu_stats:
         gpu_data['temperature'] = gpu.temperature
         gpu_data['utilization_percent'] = gpu.utilization
         gpu_data['memory_used_MB'] = gpu.memory_used
 
     return gpu_data if gpu_data else None
+
 
 

@@ -170,26 +170,26 @@ def voice_cmd():
 #             bot_dialog(say)
 #             pass
 #
-# def tell_a_joke1():
-#     global id
-#     global jcheck
-#     jcheck = 1
-#     id = random.randint(0,9)
-#     ff = open(os.getcwd() + "/Vocabulary/Jokes.txt", 'r+')
-#     for pos, line in enumerate(ff):
-#         if pos == id:
-#             say=' ' + str(line)
-#             bot_dialog(say)
+def tell_a_joke1():
+    # global id
+    # global jcheck
+    jcheck = 1
+    id = random.randint(0,9)
+    ff = open(os.getcwd() + "/Vocabulary/Jokes.txt", 'r+')
+    for pos, line in enumerate(ff):
+        if pos == id:
+            say=' ' + str(line)
+            return say
 #
-# def tell_a_joke2():
-#     global id
-#     global jcheck
-#     jcheck = 0
-#     ff = open(os.getcwd() + "/Vocabulary/JokesA.txt", 'r+')
-#     for pos, line in enumerate(ff):
-#         if pos == id:
-#             say=' ' + str(line)
-#             bot_dialog(say)
+def tell_a_joke2():
+    # global id
+    # global jcheck
+    jcheck = 0
+    ff = open(os.getcwd() + "/Vocabulary/JokesA.txt", 'r+')
+    for pos, line in enumerate(ff):
+        if pos == id:
+            say=' ' + str(line)
+            return say
 #
 #
 #

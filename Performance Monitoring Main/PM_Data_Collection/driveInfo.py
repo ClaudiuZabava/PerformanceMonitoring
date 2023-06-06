@@ -20,3 +20,5 @@ def get_disk_info():
     _drive_info['OperationalStatus'] = _res[5]
     _drive_info['HealthStatus'] = _res[6]
     return _drive_info
+
+

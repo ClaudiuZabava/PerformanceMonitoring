@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AppuqAuOQ.ui'
+## Form generated from reading UI file 'AppghmpLX.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -750,71 +750,91 @@ class Ui_MainWindow(object):
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.gridLayout_10 = QGridLayout(self.frame_7)
         self.gridLayout_10.setObjectName(u"gridLayout_10")
-        self.label_71 = QLabel(self.frame_7)
-        self.label_71.setObjectName(u"label_71")
-        self.label_71.setFont(font4)
+        self.label_75 = QLabel(self.frame_7)
+        self.label_75.setObjectName(u"label_75")
 
-        self.gridLayout_10.addWidget(self.label_71, 0, 0, 1, 1, Qt.AlignTop)
-
-        self.label_72 = QLabel(self.frame_7)
-        self.label_72.setObjectName(u"label_72")
-
-        self.gridLayout_10.addWidget(self.label_72, 1, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.label_75, 4, 0, 1, 1)
 
         self.label_78 = QLabel(self.frame_7)
         self.label_78.setObjectName(u"label_78")
 
         self.gridLayout_10.addWidget(self.label_78, 1, 1, 1, 1)
 
-        self.label_73 = QLabel(self.frame_7)
-        self.label_73.setObjectName(u"label_73")
-
-        self.gridLayout_10.addWidget(self.label_73, 2, 0, 1, 1)
-
         self.label_79 = QLabel(self.frame_7)
         self.label_79.setObjectName(u"label_79")
 
         self.gridLayout_10.addWidget(self.label_79, 2, 1, 1, 1)
 
-        self.label_74 = QLabel(self.frame_7)
-        self.label_74.setObjectName(u"label_74")
+        self.label_83 = QLabel(self.frame_7)
+        self.label_83.setObjectName(u"label_83")
 
-        self.gridLayout_10.addWidget(self.label_74, 3, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.label_83, 6, 1, 1, 1)
+
+        self.label_34 = QLabel(self.frame_7)
+        self.label_34.setObjectName(u"label_34")
+
+        self.gridLayout_10.addWidget(self.label_34, 7, 0, 1, 1)
 
         self.label_80 = QLabel(self.frame_7)
         self.label_80.setObjectName(u"label_80")
 
         self.gridLayout_10.addWidget(self.label_80, 3, 1, 1, 1)
 
-        self.label_75 = QLabel(self.frame_7)
-        self.label_75.setObjectName(u"label_75")
-
-        self.gridLayout_10.addWidget(self.label_75, 4, 0, 1, 1)
-
         self.label_81 = QLabel(self.frame_7)
         self.label_81.setObjectName(u"label_81")
 
         self.gridLayout_10.addWidget(self.label_81, 4, 1, 1, 1)
 
-        self.label_76 = QLabel(self.frame_7)
-        self.label_76.setObjectName(u"label_76")
+        self.label_71 = QLabel(self.frame_7)
+        self.label_71.setObjectName(u"label_71")
+        self.label_71.setFont(font4)
 
-        self.gridLayout_10.addWidget(self.label_76, 5, 0, 1, 1)
+        self.gridLayout_10.addWidget(self.label_71, 0, 0, 1, 1, Qt.AlignTop)
 
-        self.label_82 = QLabel(self.frame_7)
-        self.label_82.setObjectName(u"label_82")
+        self.label_35 = QLabel(self.frame_7)
+        self.label_35.setObjectName(u"label_35")
 
-        self.gridLayout_10.addWidget(self.label_82, 5, 1, 1, 1)
+        self.gridLayout_10.addWidget(self.label_35, 7, 1, 1, 1)
 
         self.label_77 = QLabel(self.frame_7)
         self.label_77.setObjectName(u"label_77")
 
         self.gridLayout_10.addWidget(self.label_77, 6, 0, 1, 1)
 
-        self.label_83 = QLabel(self.frame_7)
-        self.label_83.setObjectName(u"label_83")
+        self.label_72 = QLabel(self.frame_7)
+        self.label_72.setObjectName(u"label_72")
 
-        self.gridLayout_10.addWidget(self.label_83, 6, 1, 1, 1)
+        self.gridLayout_10.addWidget(self.label_72, 1, 0, 1, 1)
+
+        self.label_76 = QLabel(self.frame_7)
+        self.label_76.setObjectName(u"label_76")
+
+        self.gridLayout_10.addWidget(self.label_76, 5, 0, 1, 1)
+
+        self.label_74 = QLabel(self.frame_7)
+        self.label_74.setObjectName(u"label_74")
+
+        self.gridLayout_10.addWidget(self.label_74, 3, 0, 1, 1)
+
+        self.label_82 = QLabel(self.frame_7)
+        self.label_82.setObjectName(u"label_82")
+
+        self.gridLayout_10.addWidget(self.label_82, 5, 1, 1, 1)
+
+        self.label_73 = QLabel(self.frame_7)
+        self.label_73.setObjectName(u"label_73")
+
+        self.gridLayout_10.addWidget(self.label_73, 2, 0, 1, 1)
+
+        self.label_68 = QLabel(self.frame_7)
+        self.label_68.setObjectName(u"label_68")
+
+        self.gridLayout_10.addWidget(self.label_68, 8, 0, 1, 1)
+
+        self.label_69 = QLabel(self.frame_7)
+        self.label_69.setObjectName(u"label_69")
+
+        self.gridLayout_10.addWidget(self.label_69, 8, 1, 1, 1)
 
 
         self.verticalLayout_9.addWidget(self.frame_7)
@@ -964,9 +984,69 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addWidget(self.frame_9)
 
         self.stackedWidget.addWidget(self.Network)
-        self.Settings = QWidget()
-        self.Settings.setObjectName(u"Settings")
-        self.stackedWidget.addWidget(self.Settings)
+        self.Processes = QWidget()
+        self.Processes.setObjectName(u"Processes")
+        self.verticalLayout_13 = QVBoxLayout(self.Processes)
+        self.verticalLayout_13.setSpacing(0)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.frame_11 = QFrame(self.Processes)
+        self.frame_11.setObjectName(u"frame_11")
+        self.frame_11.setStyleSheet(u"background-color: rgb(21, 21, 21);\n"
+"gridline-color: rgb(42, 42, 42);\n"
+"color: rgb(255, 255, 255);")
+        self.frame_11.setFrameShape(QFrame.StyledPanel)
+        self.frame_11.setFrameShadow(QFrame.Raised)
+        self.gridLayout_13 = QGridLayout(self.frame_11)
+        self.gridLayout_13.setObjectName(u"gridLayout_13")
+        self.tableWidget2 = QTableWidget(self.frame_11)
+        if (self.tableWidget2.columnCount() < 5):
+            self.tableWidget2.setColumnCount(5)
+        __qtablewidgetitem5 = QTableWidgetItem()
+        __qtablewidgetitem5.setBackground(QColor(80, 80, 80));
+        self.tableWidget2.setHorizontalHeaderItem(0, __qtablewidgetitem5)
+        __qtablewidgetitem6 = QTableWidgetItem()
+        self.tableWidget2.setHorizontalHeaderItem(1, __qtablewidgetitem6)
+        __qtablewidgetitem7 = QTableWidgetItem()
+        self.tableWidget2.setHorizontalHeaderItem(2, __qtablewidgetitem7)
+        __qtablewidgetitem8 = QTableWidgetItem()
+        self.tableWidget2.setHorizontalHeaderItem(3, __qtablewidgetitem8)
+        __qtablewidgetitem9 = QTableWidgetItem()
+        self.tableWidget2.setHorizontalHeaderItem(4, __qtablewidgetitem9)
+        self.tableWidget2.setObjectName(u"tableWidget2")
+        self.tableWidget2.setStyleSheet(u"color: rgb(255, 255, 255);")
+
+        self.gridLayout_13.addWidget(self.tableWidget2, 0, 0, 1, 1)
+
+
+        self.verticalLayout_13.addWidget(self.frame_11)
+
+        self.frame_12 = QFrame(self.Processes)
+        self.frame_12.setObjectName(u"frame_12")
+        self.frame_12.setEnabled(True)
+        self.frame_12.setFrameShape(QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QFrame.Raised)
+        self.gridLayout_14 = QGridLayout(self.frame_12)
+        self.gridLayout_14.setObjectName(u"gridLayout_14")
+        self.pushButton_16 = QPushButton(self.frame_12)
+        self.pushButton_16.setObjectName(u"pushButton_16")
+
+        self.gridLayout_14.addWidget(self.pushButton_16, 1, 0, 1, 1)
+
+        self.label_70 = QLabel(self.frame_12)
+        self.label_70.setObjectName(u"label_70")
+
+        self.gridLayout_14.addWidget(self.label_70, 0, 0, 1, 2)
+
+        self.pushButton_17 = QPushButton(self.frame_12)
+        self.pushButton_17.setObjectName(u"pushButton_17")
+
+        self.gridLayout_14.addWidget(self.pushButton_17, 1, 1, 1, 1)
+
+
+        self.verticalLayout_13.addWidget(self.frame_12)
+
+        self.stackedWidget.addWidget(self.Processes)
 
         self.verticalLayout_3.addWidget(self.stackedWidget)
 
@@ -1017,7 +1097,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 358, 445))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 98, 398))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.gridLayout_12.addWidget(self.scrollArea, 0, 0, 1, 2)
@@ -1195,19 +1275,23 @@ class Ui_MainWindow(object):
         self.label_64.setText(QCoreApplication.translate("MainWindow", u"RAM Usage", None))
         self.label_65.setText(QCoreApplication.translate("MainWindow", u"Usage Percentage", None))
         self.label_67.setText(QCoreApplication.translate("MainWindow", u"Used Memory", None))
-        self.label_71.setText(QCoreApplication.translate("MainWindow", u"Disk Info", None))
-        self.label_72.setText(QCoreApplication.translate("MainWindow", u"Model", None))
-        self.label_78.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_73.setText(QCoreApplication.translate("MainWindow", u"Serial Number", None))
-        self.label_79.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_74.setText(QCoreApplication.translate("MainWindow", u"Type", None))
-        self.label_80.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_75.setText(QCoreApplication.translate("MainWindow", u"Pool Option", None))
-        self.label_81.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_76.setText(QCoreApplication.translate("MainWindow", u"Operational Status", None))
-        self.label_82.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
-        self.label_77.setText(QCoreApplication.translate("MainWindow", u"Health", None))
+        self.label_78.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_79.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_83.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_34.setText(QCoreApplication.translate("MainWindow", u"Read Speed", None))
+        self.label_80.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_81.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_71.setText(QCoreApplication.translate("MainWindow", u"Disk Info", None))
+        self.label_35.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_77.setText(QCoreApplication.translate("MainWindow", u"Health", None))
+        self.label_72.setText(QCoreApplication.translate("MainWindow", u"Model", None))
+        self.label_76.setText(QCoreApplication.translate("MainWindow", u"Operational Status", None))
+        self.label_74.setText(QCoreApplication.translate("MainWindow", u"Type", None))
+        self.label_82.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_73.setText(QCoreApplication.translate("MainWindow", u"Serial Number", None))
+        self.label_68.setText(QCoreApplication.translate("MainWindow", u"Write Speed", None))
+        self.label_69.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_95.setText(QCoreApplication.translate("MainWindow", u"Partitions", None))
         self.label_84.setText(QCoreApplication.translate("MainWindow", u"Storage Usage", None))
         self.label_96.setText(QCoreApplication.translate("MainWindow", u"2", None))
@@ -1230,6 +1314,19 @@ class Ui_MainWindow(object):
         self.label_104.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.label_101.setText(QCoreApplication.translate("MainWindow", u"Packages Received", None))
         self.label_105.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        ___qtablewidgetitem5 = self.tableWidget2.horizontalHeaderItem(0)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"PID", None));
+        ___qtablewidgetitem6 = self.tableWidget2.horizontalHeaderItem(1)
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MainWindow", u"Process Name", None));
+        ___qtablewidgetitem7 = self.tableWidget2.horizontalHeaderItem(2)
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("MainWindow", u"Status", None));
+        ___qtablewidgetitem8 = self.tableWidget2.horizontalHeaderItem(3)
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("MainWindow", u"Memory", None));
+        ___qtablewidgetitem9 = self.tableWidget2.horizontalHeaderItem(4)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("MainWindow", u"Actions", None));
+        self.pushButton_16.setText(QCoreApplication.translate("MainWindow", u"Terminate", None))
+        self.label_70.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.pushButton_17.setText(QCoreApplication.translate("MainWindow", u"Abort", None))
         self.pushButton_13.setText(QCoreApplication.translate("MainWindow", u"Statistics Generator", None))
         self.pushButton_14.setText(QCoreApplication.translate("MainWindow", u"Assistant", None))
         self.pushButton_15.setText("")

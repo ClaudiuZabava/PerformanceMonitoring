@@ -4,7 +4,7 @@ import os
 import datetime
 import psutil
 
-_systme_general_info = {}
+_system_general_info = {}
 
 def get_system_info():
     os_info = platform.uname()
@@ -19,11 +19,15 @@ def get_system_info():
     os_installation_time = os.path.getctime("/")
     os_installation_date = datetime.datetime.fromtimestamp(os_installation_time).strftime("%Y-%m-%d")
 
-    _systme_general_info['system'] = system
-    _systme_general_info['os_version'] = os_version
-    _systme_general_info['os_release'] = os_release
-    _systme_general_info['architecture'] = architecture
-    _systme_general_info['processor_type'] = processor_type
-    _systme_general_info['hostname'] = hostname
+    _system_general_info['system'] = system
+    _system_general_info['os_version'] = os_version
+    _system_general_info['os_release'] = os_release
+    _system_general_info['architecture'] = architecture
+    _system_general_info['processor_type'] = processor_type
+    _system_general_info['hostname'] = hostname
+    _system_general_info['os_installation_date'] = os_installation_date
 
-    return _systme_general_info if _systme_general_info else None
+
+
+    return _system_general_info if _system_general_info else None
+

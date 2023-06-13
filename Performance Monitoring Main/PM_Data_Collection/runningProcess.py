@@ -1,17 +1,33 @@
 import psutil
+import win32api
 
 def active_proc():
     _info_procese = []
 
-    for proces in psutil.process_iter(['pid', 'name', 'status', 'memory_info']):
-        _info_proces = {
-            'PID': proces.info['pid'],
-            'Name': proces.info['name'],
-            'Status': proces.info['status'],
-            'Memory(MB)': proces.info['memory_info'].rss / (1024 * 1024),
-        }
+    active_pids = psutil.pids()
 
-        _info_procese.append(_info_proces)
+    for pid in active_pids:
+        try:
+            process = psutil.Process(pid)
+        except psutil.NoSuchProcess:
+            return -1
+
+        _details = {}
+
+        _details['PID'] = pid
+        _details['Name'] = process.name()
+        _details['Status'] = process.status()
+        _details['Private Bytes'] = process.memory_info().private
+        _details['Resident Set Size (RAM)'] = process.memory_info().rss
+        _details['Virtual Memory'] = process.memory_info().vms
+        _details['Working Set'] = process.memory_info().wset
+
+        try:
+            _details['Company Name'] = win32api.GetFileVersionInfo(process.exe(), '\\StringFileInfo\\040904b0\\CompanyName')
+        except Exception:
+            _details['Company Name'] = 'N/A'
+
+        _info_procese.append(_details)
 
     return _info_procese if _info_procese else None
 
@@ -60,9 +76,5 @@ def terminate_process_and_children(pid):
         return 1020
 
 
-prr = active_proc()
-
-for p in prr:
-    print(p)
 
 

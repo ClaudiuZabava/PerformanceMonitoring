@@ -989,6 +989,34 @@ color: rgb(255, 255, 255);</string>
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_5">
+                 <item row="7" column="1">
+                  <widget class="QLabel" name="label_51">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0">
+                  <widget class="QLabel" name="label_40">
+                   <property name="text">
+                    <string>OS Architecture</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0">
+                  <widget class="QLabel" name="label_42">
+                   <property name="text">
+                    <string>CPU</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="1">
+                  <widget class="QLabel" name="label_54">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="0" column="0" alignment="Qt::AlignTop">
                   <widget class="QLabel" name="label_36">
                    <property name="font">
@@ -1002,10 +1030,45 @@ color: rgb(255, 255, 255);</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_37">
+                 <item row="2" column="1">
+                  <widget class="QLabel" name="label_47">
                    <property name="text">
-                    <string>Operating System</string>
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_39">
+                   <property name="text">
+                    <string>OS Release</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="10" column="0">
+                  <widget class="QLabel" name="label_45">
+                   <property name="text">
+                    <string>GPU</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QLabel" name="label_52">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QLabel" name="label_49">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_38">
+                   <property name="text">
+                    <string>OS Version</string>
                    </property>
                   </widget>
                  </item>
@@ -1023,17 +1086,17 @@ color: rgb(255, 255, 255);</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
-                  <widget class="QLabel" name="label_47">
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_37">
                    <property name="text">
-                    <string>TextLabel</string>
+                    <string>Operating System</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_38">
+                 <item row="9" column="1">
+                  <widget class="QLabel" name="label_53">
                    <property name="text">
-                    <string>OS Version</string>
+                    <string>TextLabel</string>
                    </property>
                   </widget>
                  </item>
@@ -1044,24 +1107,10 @@ color: rgb(255, 255, 255);</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="0">
-                  <widget class="QLabel" name="label_39">
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_43">
                    <property name="text">
-                    <string>OS Release</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="1">
-                  <widget class="QLabel" name="label_49">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="5" column="0">
-                  <widget class="QLabel" name="label_40">
-                   <property name="text">
-                    <string>OS Architecture</string>
+                    <string>CPU Type</string>
                    </property>
                   </widget>
                  </item>
@@ -1072,57 +1121,22 @@ color: rgb(255, 255, 255);</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="6" column="0">
-                  <widget class="QLabel" name="label_42">
-                   <property name="text">
-                    <string>CPU</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="6" column="1">
-                  <widget class="QLabel" name="label_51">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="7" column="0">
-                  <widget class="QLabel" name="label_43">
-                   <property name="text">
-                    <string>CPU Type</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="7" column="1">
-                  <widget class="QLabel" name="label_52">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="8" column="0">
+                 <item row="9" column="0">
                   <widget class="QLabel" name="label_44">
                    <property name="text">
                     <string>CPU Cores</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="8" column="1">
-                  <widget class="QLabel" name="label_53">
+                 <item row="6" column="0">
+                  <widget class="QLabel" name="label_85">
                    <property name="text">
-                    <string>TextLabel</string>
+                    <string>OS Installation Date</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="9" column="0">
-                  <widget class="QLabel" name="label_45">
-                   <property name="text">
-                    <string>GPU</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="9" column="1">
-                  <widget class="QLabel" name="label_54">
+                 <item row="6" column="1">
+                  <widget class="QLabel" name="label_86">
                    <property name="text">
                     <string>TextLabel</string>
                    </property>
@@ -1806,7 +1820,27 @@ color: rgb(255, 255, 255);</string>
                    </column>
                    <column>
                     <property name="text">
-                     <string>Memory</string>
+                     <string>Private Bytes</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Resident Set Size (RAM)</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Virtual Memory</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Working Set</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Company</string>
                     </property>
                    </column>
                    <column>

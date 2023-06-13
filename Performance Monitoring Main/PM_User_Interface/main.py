@@ -2,6 +2,7 @@ import os
 import re
 import sys
 from assistantPanel import *
+from chatBot import *
 
 from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsDropShadowEffect, QSizeGrip, QProgressBar, QTableWidgetItem
 from PySide6 import QtCore
@@ -27,7 +28,7 @@ from runningProcess import active_proc, terminate_process_and_children, express_
 
 
 
-
+# =========================================== Worker Thread ===========================================
 
 class WorkerThread(QThread):
     valueChanged = Signal(float)
@@ -91,8 +92,10 @@ class WorkerThread(QThread):
                 self.writeChanged.emit(disk_write)
                 sleep_time = 500
             self.msleep(sleep_time)
+# ==================================================================================================
 
 
+# =========================================== Processes Thread ===========================================
 
 class ProcessTableUpdaterThread(QThread):
     processListUpdated = Signal(list)  # Emit acest semnal atunci cand lista de procese este actualizata
@@ -109,11 +112,18 @@ class ProcessTableUpdaterThread(QThread):
                 self.processListUpdated.emit(process_list)
                 self.old_process_list = process_list
             self.msleep(10000)
+# ==================================================================================================
 
+
+# =========================================== Assistant BOT Thread ===========================================
 
 class BotThread(QThread):
-    tt = ["Hello"]
-    bdir ='D:/' if os.path.exists('D:/') else 'C:/' if os.path.exists('C:/') else 'E:/'
+    assistant = GenericAssistant('intents.json', model_name="assistant_bot")
+    assistant.load_model('assistant_bot')
+
+
+    tt = ["FIRSTTIME"]
+    bdir ='D:\\' if os.path.exists('D:\\') else 'C:\\' if os.path.exists('C:\\') else 'E:\\'
     message = ""
     botMessage = Signal(str)
     botSemaphore = QSemaphore(0)  # Inițializare semafor cu 0, ceea ce înseamnă că este blocat
@@ -163,53 +173,111 @@ class BotThread(QThread):
                 pass
         elif self.tt[k].upper() == "FIND":
             if len(self.tt) > (k+2):
-                check=0
                 ext = self.tt[(k+2)]
                 fname = self.tt[(k+1)]+'.'+ext
-                self.message ="💻"+ ct+" I found this file in those folders: "
-                for roots, dirs, files in os.walk(self.bdir):
-                    for file in files:
-                        if file.endswith(ext) and str(file).upper() == fname.upper():
-                            check+=1
-                            print(roots + '\ ' + str(file))
-                            os.startfile(str(roots))
-                if check ==0:
-                    self.message = "💻"+ ct+" Looks like this file doesn't exist on this partition"
-
+                txt = find_file(fname, ext, self.bdir)
+                self.message ="💻"+ ct + txt
             else:
                 self.message = "💻"+ ct+" Please specify the file name and extension (eg: run.exe)"
                 pass
+        elif self.tt[k].upper() == "REMOVE":
+            if self.tt[(k+1)].upper() == "ALL":
+                if len(self.tt) > (k+3):
+                    ext = self.tt[(k+3)]
+                    fname = self.tt[(k+2)]+'.'+ext
+                    txt = delete_all(fname, ext, self.bdir)
+                    self.message ="💻"+ ct + txt
+                else:
+                    self.message = "💻"+ ct+" Please specify the file name and extension (eg: run.exe)"
+                    pass
+            else:
+                if len(self.tt) > (k + 2):
+                    ext = self.tt[(k + 2)]
+                    fname = self.tt[(k + 1)] + '.' + ext
+                    txt = delete_all(fname, ext, self.bdir)
+                    self.message = "💻" + ct + txt
+                else:
+                    self.message = "💻" + ct + " Please specify the file name and extension (eg: run.exe)"
+                    pass
+        elif self.tt[k].upper() == "INFO":
+            if len(self.tt) > (k+2):
+                check = 0
+                ext = self.tt[(k+2)]
+                procname = self.tt[(k+1)]+'.'+ext
+                list = active_proc()
+                for pr in list:
+                    if str(pr['Name']).upper() == procname.upper():
+                        check +=1
+                        self.message = "💻" + ct + " Info for process called " + procname + ": " + "\n PID: " + str(
+                            pr['PID']) + "\n Name: " + str(pr['Name']) + \
+                                       "\n Status: " + str(pr['Status']) + "\n Private Bytes: " + str(pr['Private Bytes']) + "\n RSS: " + str(
+                            pr['Resident Set Size (RAM)']) + \
+                                       "\n Virtual Memory: " + str(pr['Virtual Memory']) + "\n Working Set: " + str(pr['Working Set']) + "\n Company: " + str(
+                            pr['Company Name'])
+                        break
+
+                if check == 0:
+                    self.message ="💻"+ ct + "No process called " + procname + " is running!"
+            elif len(self.tt) > (k+1):
+                check = 0
+                procID = self.tt[(k + 1)]
+                list = active_proc()
+                for pr in list:
+                    if str(pr['PID']) == procID:
+                        check += 1
+                        self.message = "💻" + ct + " Info for process with ID " + procID + ": " + "\n PID: " + str(
+                            pr['PID']) + "\n Name: " + str(pr['Name']) + \
+                                       "\n Status: " + str(pr['Status']) + "\n Private Bytes: " + str(pr['Private Bytes']) + "\n RSS: " + str(
+                            pr['Resident Set Size (RAM)']) + \
+                                       "\n Virtual Memory: " + str(pr['Virtual Memory']) + "\n Working Set: " + str(pr['Working Set']) + "\n Company: " + str(
+                            pr['Company Name'])
+                        break
+                if check == 0:
+                    self.message = "💻" + ct + " No process with ID " + str(procID) + " is running!"
+            else:
+                self.message = "💻" + ct + " Please specify the process name and extension (eg: run.exe) or just the PID"
+                pass
+
 
     def retrive(self):
         ct = '[' + datetime.now().strftime('%H:%M:%S') + ']'
         t=' '.join(self.tt) if len(self.tt)>1 else self.tt[0]
-        if t.upper() in open(os.getcwd()+"/Vocabulary/Hi.txt", 'r+').read():
-            self.message = "💻"+ ct+" Hello, Sir!"
-
-        # elif t.upper() in open(os.getcwd()+"/Vocabulary/WhatJoke.txt", 'r+').read() and jcheck == 1:
-        #     self.message = tell_a_joke2()
-        #
-        # elif t.upper() in open(os.getcwd()+"/Vocabulary/Hru.txt", 'r+').read():
-        #     self.message = "💻"+ ct+" Everything's good, Sir! How about you?"
-        elif len(self.tt)>1:
+        if len(self.tt)>1:
             if self.tt[0].upper() in open(os.getcwd()+"/Vocabulary/Action.txt").read():
                 if len(self.tt)>2 and self.tt[0].upper() == "LET" and self.tt[1].upper() == "S":
                     self.actions(2)
                 else:
                     self.actions(0)
                     pass
-            # elif self.tt[0].upper() == "HEAR" and self.tt[1].upper() == "ME":
-            #     voice_cmd()
-            # elif t.lower() == "tell me a joke":
-            #     self.message = tell_a_joke1()
+            elif self.tt[0].upper() == "HEAR" and self.tt[1].upper() == "ME":
+                verify = voice_cmd()
+                if verify != 1911:
+                    self.tt = re.split('\W+', verify)
+                    if self.tt[0].upper() in open(os.getcwd() + "/Vocabulary/Action.txt").read():
+                        if len(self.tt) > 1:
+                            if self.tt[0].upper() == "LET" and self.tt[1].upper() == "S":
+                                self.actions(2)
+                            else:
+                                self.actions(0)
+                                pass
+                        else:
+                            self.message = "💻"+ ct+ "Sorry Sir, I didn't understand that..."
+                    else:
+                        bot_reply = self.assistant.request(verify)
+                        self.message = "💻" + ct + "I think I heared: " + verify + "\n" + "💻" + ct + bot_reply
+                else:
+                    self.message = "💻"+ ct+ "Sorry Sir, I didn't understand that..."
             else:
-                self.message = "💻"+ ct+" Hmm, I don't think I understand those words, sir!"
+                bot_reply = self.assistant.request(t)
+                self.message = "💻" + ct + bot_reply
                 pass
+        elif len(self.tt)==1 and self.tt[0].upper() == "FIRSTTIME":
+            self.message = "💻"+ ct + welcome_text()
         else:
-            self.message = "💻"+ ct+" Hmm, I don't think I understand those words, sir!"
-
-            say = " Don't worry. I'll save them somewhere to learn later."
+            bot_reply = self.assistant.request(t)
+            self.message = "💻"+ ct+ bot_reply
             pass
+
 
     def run(self):
         while True:
@@ -223,11 +291,10 @@ class BotThread(QThread):
         self.tt = re.split('\W+', text)
         self.botSemaphore.release()  # Deblocare semafor
 
+# ==================================================================================================
 
 
-
-
-
+# ==================================== Main Application =============================================
 
 class MainApp(QMainWindow):
     def toggle_maximize(self):
@@ -281,18 +348,31 @@ class MainApp(QMainWindow):
         if state == 0:
             self.botThread.unlock(text)
 
+    # metoda suprascrisa pentru a putea folosi enter pentru a trimite mesajul
+    def eventFilter(self, source, event):
+        if (event.type() == QEvent.KeyPress and source is self.ui.plainTextEdit):
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                self.add_text_to_scrollarea()
+                return True
+        return super(MainApp, self).eventFilter(source, event)
+
+
     def add_process_to_table(self, process_info):
         self.ui.tableWidget2.insertRow(0)
 
         self.ui.tableWidget2.setItem(0, 0, QTableWidgetItem(str(process_info['PID'])))
         self.ui.tableWidget2.setItem(0, 1, QTableWidgetItem(process_info['Name']))
         self.ui.tableWidget2.setItem(0, 2, QTableWidgetItem(process_info['Status']))
-        self.ui.tableWidget2.setItem(0, 3, QTableWidgetItem(str(process_info['Memory(MB)'])))
+        self.ui.tableWidget2.setItem(0, 3, QTableWidgetItem(str(process_info['Private Bytes'])))
+        self.ui.tableWidget2.setItem(0, 4, QTableWidgetItem(str(process_info['Resident Set Size (RAM)'])))
+        self.ui.tableWidget2.setItem(0, 5, QTableWidgetItem(str(process_info['Virtual Memory'])))
+        self.ui.tableWidget2.setItem(0, 6, QTableWidgetItem(str(process_info['Working Set'])))
+        self.ui.tableWidget2.setItem(0, 7, QTableWidgetItem(str(process_info['Company Name'])))
 
-        button = QPushButton("Click Me")
+        button = QPushButton("Kill")
         button.setStyleSheet("background-color: #505050")
         button.clicked.connect(lambda: self.handle_button_click(process_info['PID']))
-        self.ui.tableWidget2.setCellWidget(0, 4, button)
+        self.ui.tableWidget2.setCellWidget(0, 8, button)
 
     def update_process_table(self, process_list):
         self.ui.tableWidget2.setRowCount(0)
@@ -460,6 +540,8 @@ class MainApp(QMainWindow):
         self.ui.label_52.setText(str(display_info['system']['processor_type']))
         self.ui.label_53.setText(str(display_info['system']['cpu_cores']))
         self.ui.label_54.setText(str(display_info['system']['gpu_name']))
+        self.ui.label_86.setText(str(display_info['system']['os_installation_date']))
+
 
 
         # Getting Real Data - RAM:
@@ -501,7 +583,7 @@ class MainApp(QMainWindow):
                 self.ui.tableWidget.removeRow(i)
 
         # Prepare Table for Processes
-        headers = ["PID", "Process Name", "Status", "Memory(MB)", "Actions"]
+        headers = ["PID", "Process Name", "Status", "Private Bytes", "Resident SetSize (RAM)", "Virtual Memory", "Working Set", "Company", "Actions"]
         for i in range(len(headers)):
             header_item = QTableWidgetItem(headers[i])
             brush = QBrush(QColor(0, 0, 0))
@@ -605,6 +687,7 @@ class MainApp(QMainWindow):
         scroll_layout.setAlignment(Qt.AlignTop)
         self.ui.scrollAreaWidgetContents.setLayout(scroll_layout)
 
+        self.ui.plainTextEdit.installEventFilter(self)
 
         self.botThread = BotThread()
         self.botThread.botMessage.connect(self.add_text_to_scrollarea)

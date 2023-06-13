@@ -1,0 +1,46 @@
+{
+    "intents": [
+      {
+        "tag": "greeting",
+        "patterns": [
+          "Hi", "How are you", "Is anyone there?", "Hello", "Good day", "Whats up", "Hey", "greetings", "Hola", "Hello there", "Howdy", "What's new?", "Hi there", "Good to see you", "What's happening?", "How's it going?", "Nice to meet you", "Good morning", "Good afternoon", "Good evening", "Pleased to meet you", "It's nice to see you", "Long time no see", "What's going on?", "How's everything?", "What's up?", "How's life?", "How's your day?", "Hiya", "How's it going?", "Hey there", "What's good?", "How have you been?", "Hey!", "Yo!", "Hi, how's your day going?", "How's everything going?", "Are you alright?", "How's everything with you?"
+        ],
+        "responses": [
+          "Hello!", "Good to see you again!", "Hi there, how can I help?", "Hello there! How can I assist you today?", "Greetings! How can I help you?", "Hi! How can I assist you?", "Good to see you! How can I help you today?", "Hello! What can I do for you today?", "Hey! How may I assist you?", "Hello, how may I assist you today?", "Hi, what can I do for you?", "Good day! How can I assist you?", "Hello, what can I help you with today?", "Hi there! What can I do for you today?", "Hello! How can I assist you?", "Hi, how may I help you?", "Good to see you! What can I assist you with today?", "Hello, what can I do for you today?", "Hey, how can I assist you today?", "Hello! What can I assist you with?", "Hi, what can I help you with?", "Good day, how can I assist you?", "Hi there! How may I assist you today?", "Hello! How can I help you today?"
+        ],
+        "context_set": ""
+      },
+      {
+        "tag": "goodbye",
+        "patterns": [
+          "cya", "See you later", "Goodbye", "I am Leaving", "Have a Good day", "bye", "I have to go", "I'm off", "Talk to you later", "I need to get going", "I'll catch you later", "Until next time", "Farewell", "Catch you later", "I have to head out", "I'm heading out", "Time for me to go", "I need to leave", "See ya", "I'll see you later", "See you soon", "Bye for now", "Talk to you soon", "Until we meet again", "I must go", "Goodbye for now", "It's time for me to leave", "I'll talk to you later", "I'm out", "Later", "I'll see you next time"
+        ],
+        "responses": [
+          "Sad to see you go :(", "Talk to you later", "Goodbye!", "See you next time", "Take care", "Have a great day", "See you soon", "Until next time", "Farewell!", "Catch you later", "Safe travels", "Have a good one", "Goodbye for now", "Looking forward to our next chat", "Have a nice day", "See you later", "Bye for now", "All the best", "Goodbye and take care", "Take it easy", "See ya", "Until we meet again", "Hope to see you again soon", "Bye, take care", "Take care, bye", "It was nice talking to you"
+        ],
+        "context_set": ""
+      },
+      {
+        "tag": "stocks",
+        "patterns": ["what stocks do I own?", "how are my shares?", "what companies am I investing in?", "what am I doing in the markets?", "how's my portfolio?", "update me about my stocks", "what's the status of my shares?"],
+        "responses": ["You own the following shares: ABBV, AAPL, FB, NVDA and an ETF of the S&P 500 Index!", "Your portfolio contains shares from ABBV, AAPL, FB, NVDA and an ETF of the S&P 500 Index", "You're currently invested in ABBV, AAPL, FB, NVDA and an S&P 500 ETF!"],
+        "context_set": ""
+      },
+      {
+        "tag": "weather",
+        "patterns": ["How is the weather today?", "What's the weather like?", "Is it going to rain today?", "What is the forecast for today?", "Should I take an umbrella today?"],
+        "responses": ["I am sorry, I don't have the ability to check the weather as it requires real-time information. Please check a reliable weather service."],
+        "context_set": ""
+      },
+      {
+        "tag": "jokes",
+        "patterns": [
+          "Tell me a joke", "Do you know any jokes?", "Make me laugh", "I need something funny", "Know any good jokes?", "Hit me with a joke", "I could use a laugh", "Have any jokes to share?", "Tell me something funny", "Cheer me up with a joke", "I'm in need of a good laugh", "Give me your best joke", "I need to hear a joke", "Can you tell a joke?", "What's a good joke?", "Tell me your best joke", "Got any funny jokes?", "I could use a good joke", "Know any jokes?", "Let's hear a joke", "Do you know a funny joke?", "Tell a joke", "Share a joke", "What's your best joke?", "Do you have a joke for me?", "Give me a joke", "I want to hear a joke", "Share a funny joke", "Can you share a joke?"
+        ],
+        "responses": [
+          "Why don't scientists trust atoms? Because they make up everything!", "Why was the math book sad? Because it had too many problems!", "Why don't some fish play piano? Because you can't tuna fish!", "What do you call fake spaghetti? An impasta!", "Why don't we write secrets in a computer? Because it has too many bytes!", "Why was the computer cold? It left its Windows open!", "Why did the golfer bring two pairs of pants? In case he got a hole in one!", "What do you call a snowman with a six-pack? An abdominal snowman!", "Why did the scarecrow win an award? Because he was outstanding in his field!", "What do you call a fish without eyes? Fsh!", "Why can't a bicycle stand up by itself? Because it's two-tired!", "Why was the belt arrested? Because it was holding up a pair of pants!", "How do you organize a space party? You planet!", "Why did the tomato turn red? Because it saw the salad dressing!", "Why don't skeletons fight each other? They don't have the guts!", "Why did the picture go to jail? Because it was framed!", "Why do we tell actors to 'break a leg'? Because every play has a cast!"
+        ],
+        "context_set": ""
+      }     
+    ]
+  }

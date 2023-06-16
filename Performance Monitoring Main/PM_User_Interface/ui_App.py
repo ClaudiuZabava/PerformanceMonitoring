@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'AppeORCkQ.ui'
+## Form generated from reading UI file 'AppxOppsa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -1073,7 +1073,13 @@ class Ui_MainWindow(object):
 
         self.right_frame = QFrame(self.main_body_frame)
         self.right_frame.setObjectName(u"right_frame")
-        self.right_frame.setMinimumSize(QSize(400, 0))
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.right_frame.sizePolicy().hasHeightForWidth())
+        self.right_frame.setSizePolicy(sizePolicy4)
+        self.right_frame.setMinimumSize(QSize(450, 0))
+        self.right_frame.setMaximumSize(QSize(450, 16777215))
         self.right_frame.setFrameShape(QFrame.StyledPanel)
         self.right_frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_12 = QVBoxLayout(self.right_frame)
@@ -1104,7 +1110,74 @@ class Ui_MainWindow(object):
         self.stackedWidget_2.setMinimumSize(QSize(0, 0))
         self.statistics = QWidget()
         self.statistics.setObjectName(u"statistics")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.statistics.sizePolicy().hasHeightForWidth())
+        self.statistics.setSizePolicy(sizePolicy5)
+        self.gridLayout_15 = QGridLayout(self.statistics)
+        self.gridLayout_15.setObjectName(u"gridLayout_15")
+        self.label_87 = QLabel(self.statistics)
+        self.label_87.setObjectName(u"label_87")
+        self.label_87.setMaximumSize(QSize(16777215, 15))
+
+        self.gridLayout_15.addWidget(self.label_87, 0, 0, 1, 3, Qt.AlignHCenter)
+
+        self.label_88 = QLabel(self.statistics)
+        self.label_88.setObjectName(u"label_88")
+        self.label_88.setMaximumSize(QSize(16777215, 15))
+
+        self.gridLayout_15.addWidget(self.label_88, 2, 1, 1, 1)
+
+        self.frame_14 = QFrame(self.statistics)
+        self.frame_14.setObjectName(u"frame_14")
+        self.frame_14.setFrameShape(QFrame.StyledPanel)
+        self.frame_14.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.frame_14)
+        self.horizontalLayout_10.setSpacing(0)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.label_90 = QLabel(self.frame_14)
+        self.label_90.setObjectName(u"label_90")
+
+        self.horizontalLayout_10.addWidget(self.label_90)
+
+
+        self.gridLayout_15.addWidget(self.frame_14, 3, 0, 1, 3)
+
+        self.pushButton_18 = QPushButton(self.statistics)
+        self.pushButton_18.setObjectName(u"pushButton_18")
+
+        self.gridLayout_15.addWidget(self.pushButton_18, 4, 0, 1, 1)
+
+        self.pushButton_19 = QPushButton(self.statistics)
+        self.pushButton_19.setObjectName(u"pushButton_19")
+
+        self.gridLayout_15.addWidget(self.pushButton_19, 4, 2, 1, 1)
+
+        self.frame_13 = QFrame(self.statistics)
+        self.frame_13.setObjectName(u"frame_13")
+        sizePolicy1.setHeightForWidth(self.frame_13.sizePolicy().hasHeightForWidth())
+        self.frame_13.setSizePolicy(sizePolicy1)
+        self.frame_13.setMinimumSize(QSize(0, 0))
+        self.frame_13.setFrameShape(QFrame.StyledPanel)
+        self.frame_13.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.frame_13)
+        self.horizontalLayout_9.setSpacing(0)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.label_89 = QLabel(self.frame_13)
+        self.label_89.setObjectName(u"label_89")
+
+        self.horizontalLayout_9.addWidget(self.label_89)
+
+
+        self.gridLayout_15.addWidget(self.frame_13, 1, 0, 1, 3)
+
         self.stackedWidget_2.addWidget(self.statistics)
+        self.page = QWidget()
+        self.page.setObjectName(u"page")
+        self.stackedWidget_2.addWidget(self.page)
         self.assistant = QWidget()
         self.assistant.setObjectName(u"assistant")
         self.gridLayout_12 = QGridLayout(self.assistant)
@@ -1210,7 +1283,7 @@ class Ui_MainWindow(object):
         self.pushButton_4.setDefault(False)
         self.pushButton.setDefault(False)
         self.stackedWidget.setCurrentIndex(0)
-        self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget_2.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1237,7 +1310,7 @@ class Ui_MainWindow(object):
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"RAM", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Disk Storage", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Network", None))
-        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Processes", None))
         self.label_15.setText(QCoreApplication.translate("MainWindow", u"Base Frequency", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"Frequency", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
@@ -1357,6 +1430,12 @@ class Ui_MainWindow(object):
         self.pushButton_17.setText(QCoreApplication.translate("MainWindow", u"Abort", None))
         self.pushButton_13.setText(QCoreApplication.translate("MainWindow", u"Statistics Generator", None))
         self.pushButton_14.setText(QCoreApplication.translate("MainWindow", u"Assistant", None))
+        self.label_87.setText(QCoreApplication.translate("MainWindow", u"PC Utilization in the past 7 days", None))
+        self.label_88.setText(QCoreApplication.translate("MainWindow", u"Top Most Used Apps", None))
+        self.label_90.setText("")
+        self.pushButton_18.setText(QCoreApplication.translate("MainWindow", u"Daily", None))
+        self.pushButton_19.setText(QCoreApplication.translate("MainWindow", u"Weekly", None))
+        self.label_89.setText("")
         self.pushButton_15.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Version 1.0 | Alpha", None))
         self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"?", None))

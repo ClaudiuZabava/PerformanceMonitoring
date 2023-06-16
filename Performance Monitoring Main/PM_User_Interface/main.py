@@ -3,10 +3,18 @@ import re
 import sys
 from assistantPanel import *
 from chatBot import *
+from statisticsGenerator import *
 
-from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsDropShadowEffect, QSizeGrip, QProgressBar, QTableWidgetItem
+from datetime import datetime, timedelta
+import sqlite3
+from collections import defaultdict
+from operator import itemgetter
+import matplotlib.pyplot as plt
+from threading import Timer
+
+from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsDropShadowEffect, QSizeGrip, QProgressBar, QTableWidgetItem, QLabel
 from PySide6 import QtCore
-from PySide6.QtCore import QEvent, QTimer, QThread, Signal, Slot, QSemaphore
+from PySide6.QtCore import QEvent, QTimer, QThread, Signal, Slot, QSemaphore, QMutex, QWaitCondition
 from PySide6 import QtGui
 from ui_App import *
 from progressBar import RoundProgressBar, TempProgressBar, CustomProgressBar
@@ -45,10 +53,11 @@ class WorkerThread(QThread):
     def __init__(self, data_type, parent=None):
         super().__init__(parent)
         self.data_type = data_type  # store the data type to collect
+        self.running = True
 
     def run(self):
         sleep_time = 500
-        while True:  # continuously update the value
+        while self.running:  # continuously update the value
             if self.data_type == 'CPU':
                 freq = cpu_frequency()
                 usage = cpu_usage()['CPUUsage'] / 100.0
@@ -92,6 +101,9 @@ class WorkerThread(QThread):
                 self.writeChanged.emit(disk_write)
                 sleep_time = 500
             self.msleep(sleep_time)
+
+    def stop(self):
+        self.running = False
 # ==================================================================================================
 
 
@@ -103,15 +115,20 @@ class ProcessTableUpdaterThread(QThread):
 
     def __init__(self):
         super().__init__()
+        self.running = True
 
     def run(self):
-        while True:
+        while self.running:
             process_list = active_proc()
             if self.old_process_list != process_list:
                 print(True)
                 self.processListUpdated.emit(process_list)
                 self.old_process_list = process_list
             self.msleep(10000)
+
+    def stop(self):
+        print("Stopped Process Table Updater Thread")
+        self.running = False
 # ==================================================================================================
 
 
@@ -127,6 +144,10 @@ class BotThread(QThread):
     message = ""
     botMessage = Signal(str)
     botSemaphore = QSemaphore(0)  # Inițializare semafor cu 0, ceea ce înseamnă că este blocat
+
+    def __init__(self):
+        super().__init__()
+        self.running = True
 
 
     def actions(self, k):
@@ -280,8 +301,11 @@ class BotThread(QThread):
 
 
     def run(self):
-        while True:
+        while self.running:
             self.botSemaphore.acquire()  # Așteaptă până când semaforul este deblocat
+
+            if self.running == False:
+                break
 
             self.retrive()
             self.botMessage.emit(self.message)
@@ -290,6 +314,278 @@ class BotThread(QThread):
             text = "Hello"
         self.tt = re.split('\W+', text)
         self.botSemaphore.release()  # Deblocare semafor
+
+    def stop(self):
+        self.running = False
+
+
+
+# ==================================================================================================
+
+
+# =========================================== Statistics Thread ===========================================
+
+class AppUsageMonitor(QThread):
+
+    def __init__(self, mutex, wait_cond):
+        super().__init__()
+        self.conn = None
+        self.c = None
+        self.mutex = mutex
+        self.wait_cond = wait_cond
+        self.sibling_thread = None
+        self.running = True
+
+    def get_app_usage(self):
+        self.c.execute("""
+            SELECT currentdate, appname, realactivetime, usagetime
+            FROM usagestat 
+            ORDER BY realactivetime DESC
+        """)
+        rows = self.c.fetchall()
+        result_dict = defaultdict(list)
+        for row in rows:
+            date, app, real_active_time, usage_time = row
+            result_dict[date].append((app, real_active_time, usage_time))
+
+        return dict(result_dict) if result_dict else None
+
+    def get_sibling_thread(self, sibling_thread):
+        self.sibling_thread = sibling_thread
+
+    def get_active_window(self):
+        window = win32gui.GetForegroundWindow()
+        return window
+
+
+    def get_app_name(self,window_handle):
+        try:
+            _, pid = win32process.GetWindowThreadProcessId(window_handle)  # modificat pentru a obtine PID
+            return psutil.Process(pid).name()
+        except:
+            return "unknown"
+
+
+    class LASTINPUTINFO(ctypes.Structure):
+        _fields_ = [
+            ('cbSize', ctypes.c_uint),
+            ('dwTime', ctypes.c_uint),
+        ]
+
+    def get_idle_duration(self):
+        lastInputInfo = LASTINPUTINFO()
+        lastInputInfo.cbSize = ctypes.sizeof(lastInputInfo)
+        if ctypes.windll.user32.GetLastInputInfo(ctypes.byref(lastInputInfo)):
+            millis = ctypes.windll.kernel32.GetTickCount() - lastInputInfo.dwTime
+            return millis / 1000.0  # Convert to seconds
+        else:
+            return 0  # Could not get idle time
+
+
+
+    def run(self):
+        self.conn = sqlite3.connect('app_usage.db')
+        self.c = self.conn.cursor()
+        self.c.execute("""
+                  CREATE TABLE IF NOT EXISTS usagestat
+                  (appname TEXT, currentdate TEXT, starttime TEXT, endtime TEXT, usagetime INTEGER, realactivetime INTEGER)
+                  """)
+        rez = self.get_app_usage()
+        self.mutex.lock()
+        if self.sibling_thread is not None:
+            self.sibling_thread.rez_dict = rez
+            self.wait_cond.wakeAll()
+        self.mutex.unlock()
+
+        current_app = ''
+        start_time = datetime.now()
+        idle_time_start = None
+        real_active_time = 0
+        try:
+            while self.running:
+                try:
+                    new_app_handle = self.get_active_window()
+                    new_app_name = self.get_app_name(new_app_handle)
+                    idle_duration = self.get_idle_duration()
+
+                    if idle_duration > 10.0:  # Daca inactivitatea este mai mare de 10 sec
+                        if idle_time_start is None:  # Prima data cand detectam inactivitate
+                            idle_time_start = datetime.now()
+                    else:
+                        if idle_time_start is not None:  # Daca a fost o perioada de inactivitate
+                            idle_duration = (datetime.now() - idle_time_start).seconds
+                            #print("Idle for", idle_duration, "seconds")
+                            real_active_time -= idle_duration  # Scade perioada de inactivitate din timpul de activitate
+                            idle_time_start = None  # Reseteaza timpul de start al inactivitatii
+
+                    if new_app_name != current_app:
+                        end_time = datetime.now()
+                        usage_time = (end_time - start_time).seconds
+                        real_active_time = usage_time - abs(real_active_time)
+
+                        if current_app != '':
+                            self.c.execute("INSERT INTO usagestat VALUES (?, ?, ?, ?, ?, ?)",
+                                           (current_app, str(datetime.now().date()), str(start_time),
+                                            str(end_time),
+                                            usage_time, real_active_time))
+
+                        current_app = new_app_name
+                        real_active_time = 0
+                        start_time = datetime.now()
+                    time.sleep(1)  # Cateva secunde de pauza
+                except Exception as e:
+                    print(f"Exception occurred: {e}")
+                    break
+        except Exception as d:
+            print("Stop aici")
+            pass
+
+        if self.running == False:
+            end_time = datetime.now()
+            usage_time = (end_time - start_time).seconds
+            real_active_time = usage_time - abs(real_active_time)
+            print(usage_time)
+            print(real_active_time)
+            if current_app != '':
+                self.c.execute("INSERT INTO usagestat VALUES (?, ?, ?, ?, ?, ?)",
+                               (current_app, str(datetime.now().date()), str(start_time),
+                                str(end_time),
+                                usage_time, real_active_time))
+            real_active_time = 0
+            print("AppUsageMonitor thread is exiting...")
+            self.conn.commit()
+            self.conn.close()
+
+        self.quit()
+
+
+
+
+
+    def stop(self):
+        print("Stop method was called.")
+        self.running = False
+        print(self.running)
+
+
+
+class StatisticsThread(QThread):
+
+    def __init__(self, mutex, wait_cond):
+        super().__init__()
+        self.rez_dict = None
+        self.mutex = mutex
+        self.wait_cond = wait_cond
+        self.running = True
+
+    def get_total_real_active_time_per_day(self, rez_dict):
+        result_dict = {}
+        for date, app_infos in rez_dict.items():
+            for app_info in app_infos:
+                app, total_time, _ = app_info
+                if date not in result_dict:
+                    result_dict[date] = [(app, total_time)]
+                else:
+                    result_dict[date].append((app, total_time))
+        return result_dict
+
+    def get_total_usage_time_per_day(self, rez_dict):
+        result_dict = {}
+        for date, app_infos in rez_dict.items():
+            for app_info in app_infos:
+                app, _, usage_time = app_info
+                if date not in result_dict:
+                    result_dict[date] = usage_time
+                else:
+                    result_dict[date] += usage_time
+
+
+        final_dict = {k: result_dict[k] for k in sorted(result_dict.keys(), reverse=True)[:7]}
+
+        return final_dict if final_dict else None
+
+
+    def get_top5_apps_last7days(self, stats_dict):
+
+        app_time = defaultdict(int)
+        sorted_dates = sorted(stats_dict.keys(), reverse=True)[:7]
+
+        for date in sorted_dates:
+            for app, time in stats_dict[date]:
+                app_time[app] += time
+        top5_apps = sorted(app_time.items(), key=itemgetter(1), reverse=True)[:5]
+        return top5_apps if top5_apps else []
+
+    def get_top5_apps_lastday(self, stats_dict):
+        app_time = defaultdict(int)
+
+        yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+
+        # Daca nu avem inregistrari pentru ziua de ieri, returnam o lista goala
+        if yesterday not in stats_dict:
+            return []
+
+        for app, real_time in stats_dict[yesterday]:
+            app_time[app] += real_time
+
+        # Sortam dictionarul dupa timp si ne luam primele 5 aplicatii
+        top5_apps = sorted(app_time.items(), key=itemgetter(1), reverse=True)[:5]
+
+        return top5_apps if top5_apps else []
+
+    def plot_generator(self,  top5_apps, total_usage_per_day, top5_daily):
+        apps = [app for app, _ in top5_apps]
+        times = [time / 3600 for _, time in top5_apps]
+        daily_apps = [app for app, _ in top5_daily]
+        daily_times = [time / 3600 for _, time in top5_daily]  # top 5 apps in ultima zi
+        total_usage_times = [time / 3600 for time in total_usage_per_day.values()]
+        dates = list(total_usage_per_day.keys())
+
+        fig1, ax1 = plt.subplots(figsize=(4.0, 2.5), dpi=100)
+        ax1.bar(apps, times, color='blue')
+        ax1.set_xlabel("Apps")
+        ax1.set_ylabel("Time Spent (hours)")
+        ax1.set_title("Most used apps the last 7 days")
+        plt.xticks(rotation=10)
+        ax1.tick_params(axis='x', labelsize=6)
+        fig1.savefig("statistics/top5_apps.png", dpi=100)
+
+        fig2, ax2 = plt.subplots(figsize=(4.0, 2.5), dpi=100)
+        ax2.plot(dates, total_usage_times, color='red')
+        ax2.set_xlabel("Date")
+        ax2.set_ylabel("Time Spent (hours)")
+        ax2.set_title("Time spent on PC the last 7 days")
+        plt.xticks(rotation=10)
+        ax2.tick_params(axis='x', labelsize=6)
+        fig2.savefig("statistics/pc_time.png", dpi=100)
+
+        fig1, ax1 = plt.subplots(figsize=(4.0, 2.5), dpi=100)
+        ax1.bar(daily_apps, daily_times, color='blue')
+        ax1.set_xlabel("Apps")
+        ax1.set_ylabel("Time Spent (hours)")
+        ax1.set_title("Most used apps the last day")
+        plt.xticks(rotation=10)
+        ax1.tick_params(axis='x', labelsize=6)
+        fig1.savefig("statistics/top5_daily.png", dpi=100)
+
+    def run(self):
+
+        self.mutex.lock()
+        while self.rez_dict is None:
+            self.wait_cond.wait(self.mutex)
+        self.mutex.unlock()
+        stats_dict = self.get_total_real_active_time_per_day(self.rez_dict)
+        top5_apps = self.get_top5_apps_last7days(stats_dict)
+        top5_daily = self.get_top5_apps_lastday(stats_dict)
+        total_usage_per_day = self.get_total_usage_time_per_day(self.rez_dict)
+        self.plot_generator(top5_apps, total_usage_per_day, top5_daily)
+        self.quit()
+
+    def stop(self):
+        self.running = False
+
+
+
 
 # ==================================================================================================
 
@@ -327,6 +623,23 @@ class MainApp(QMainWindow):
             self.ui.label_9.setSizePolicy(self.ui.label_9.sizePolicy().Policy.Preferred, self.ui.label_9.sizePolicy().Policy.Preferred)
             self.ui.label_10.setSizePolicy(self.ui.label_10.sizePolicy().Policy.Preferred, self.ui.label_10.sizePolicy().Policy.Preferred)
 
+
+    def show_daily(self):
+        pixmap = QPixmap("statistics/top5_daily.png")
+        pixmap_r1 = pixmap.scaled(400,250, Qt.KeepAspectRatio)
+        self.ui.label_90.setPixmap(pixmap_r1)
+
+    def show_weekly(self):
+        pixmap = QPixmap("statistics/top5_apps.png")
+        pixmap_r1 = pixmap.scaled(400,250, Qt.KeepAspectRatio)
+        self.ui.label_90.setPixmap(pixmap_r1)
+
+    def load_image_into_frame(self):
+        pixmap = QPixmap("statistics/pc_time.png")
+        pixmap_r2 = pixmap.scaled(400,250, Qt.KeepAspectRatio)
+        self.ui.label_89.setPixmap(pixmap_r2)
+        self.show_weekly()
+        self.ui.stackedWidget_2.setCurrentWidget(self.ui.statistics)
 
     def add_text_to_scrollarea(self, bot_text=None):
         state=0
@@ -396,12 +709,17 @@ class MainApp(QMainWindow):
 
     def handle_express_kill_button_click(self):
         if self.pending_kill_pid is not None:
-            res = express_kill(self.pending_kill_pid)
-            if res != 1:
+            try:
+                res = express_kill(self.pending_kill_pid)
+                if res != 1:
+                    self.ui.label_70.setText("Error! Could not kill the process with PID:{" + str(self.pending_kill_pid) + "}")
+                else:
+                    self.ui.label_70.setText("Process with PID:{" + str(self.pending_kill_pid) + "} has been killed!")
+                self.pending_kill_pid = None
+            except Exception as e:
                 self.ui.label_70.setText("Error! Could not kill the process with PID:{" + str(self.pending_kill_pid) + "}")
-            else:
-                self.ui.label_70.setText("Process with PID:{" + str(self.pending_kill_pid) + "} has been killed!")
-            self.pending_kill_pid = None
+                self.pending_kill_pid = None
+                print(e)
         self.ui.pushButton_16.hide()
         self.ui.pushButton_17.hide()
 
@@ -463,6 +781,35 @@ class MainApp(QMainWindow):
             self.botThread.start()
             self.botThread.botSemaphore.release()
 
+    def closeEvent(self, event):
+
+        self.worker_thread.stop()
+        self.worker_thread.wait()
+
+        self.worker_thread2.stop()
+        self.worker_thread2.wait()
+
+        self.worker_thread3.stop()
+        self.worker_thread3.wait()
+
+        self.worker_thread4.stop()
+        self.worker_thread4.wait()
+
+        self.worker_thread5.stop()
+        self.worker_thread5.wait()
+
+        self.monitoring_thread.stop()
+        self.monitoring_thread.wait()
+
+        self.ProcessesThread.stop()
+        self.ProcessesThread.wait()
+
+        self.botThread.stop()
+        self.botThread.botSemaphore.release()
+        self.botThread.wait()
+
+        event.accept()
+
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -509,8 +856,10 @@ class MainApp(QMainWindow):
         self.ui.pushButton_10.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Network))
         self.ui.pushButton_6.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.CPU))
         self.ui.pushButton_11.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Processes))
-        self.ui.pushButton_13.clicked.connect(lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.statistics))
+        self.ui.pushButton_13.clicked.connect(lambda: self.load_image_into_frame())
         self.ui.pushButton_14.clicked.connect(lambda: self.ui.stackedWidget_2.setCurrentWidget(self.ui.assistant))
+        self.ui.pushButton_18.clicked.connect(lambda: self.show_daily())
+        self.ui.pushButton_19.clicked.connect(lambda: self.show_weekly())
 
 
 
@@ -696,6 +1045,21 @@ class MainApp(QMainWindow):
 
 
         self.ui.pushButton_15.clicked.connect(lambda : self.add_text_to_scrollarea())
+
+
+
+
+# ==============================================================================================================
+# ===========================================  Statistici  =====================================================
+        self.query_mutex = QMutex()
+        self.query_wait = QWaitCondition()
+        self.monitoring_thread = AppUsageMonitor(self.query_mutex, self.query_wait)
+        self.statistics_thread = StatisticsThread(self.query_mutex, self.query_wait)
+
+        self.monitoring_thread.get_sibling_thread(self.statistics_thread)
+
+        self.monitoring_thread.start()
+        self.statistics_thread.start()
 
 
 

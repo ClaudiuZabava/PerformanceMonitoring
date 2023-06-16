@@ -48,6 +48,8 @@ def express_kill(pid):
         parent = psutil.Process(pid)
     except psutil.NoSuchProcess:
         return -1
+    except Exception as e:
+        return -1
 
     children = parent.children(recursive=True)
 
@@ -58,13 +60,17 @@ def express_kill(pid):
             return 0
         except psutil.AccessDenied:
             return -1
+        except Exception as e:
+            return -1
+    try:
+        parent.terminate()
 
-    parent.terminate()
+        gone, still_alive = psutil.wait_procs([parent] + children, timeout=3)
 
-    gone, still_alive = psutil.wait_procs([parent] + children, timeout=3)
-
-    for p in still_alive:
-        p.kill()
+        for p in still_alive:
+            p.kill()
+    except Exception as e:
+        return -1
 
     return 1
 
@@ -74,6 +80,9 @@ def terminate_process_and_children(pid):
         return express_kill(pid)
     else:
         return 1020
+
+
+print(get_user_from_pid(1340))
 
 
 

@@ -3,14 +3,13 @@ import re
 import sys
 from assistantPanel import *
 from chatBot import *
-from statisticsGenerator import *
+from statisticsGeneratorLibs import *
 
 from datetime import datetime, timedelta
 import sqlite3
 from collections import defaultdict
 from operator import itemgetter
 import matplotlib.pyplot as plt
-from threading import Timer
 
 from PySide6.QtWidgets import QMainWindow, QApplication, QGraphicsDropShadowEffect, QSizeGrip, QProgressBar, QTableWidgetItem, QLabel
 from PySide6 import QtCore
@@ -24,7 +23,7 @@ parent_dir = os.path.dirname(current_dir)
 data_collection_dir = os.path.join(parent_dir, "PM_Data_Collection")
 sys.path.insert(0, data_collection_dir)
 
-# Broken Imports
+# Import la filele de colectare aflate in folderul local
 from cpuData import cpu_info, cpu_frequency, cpu_usage
 from gpuData import get_gpu_info, get_gpu_usage_data
 from memoryData import ram_info, ram_usage_data
@@ -309,7 +308,7 @@ class BotThread(QThread):
 
             self.retrive()
             self.botMessage.emit(self.message)
-    def unlock(self, text):  # Apelat când vrei ca botul să scrie un mesaj
+    def unlock(self, text):  # Apelat când vrem ca botul să scrie un mesaj
         if text == None or text == "":
             text = "Hello"
         self.tt = re.split('\W+', text)
@@ -365,13 +364,6 @@ class AppUsageMonitor(QThread):
         except:
             return "unknown"
 
-
-    class LASTINPUTINFO(ctypes.Structure):
-        _fields_ = [
-            ('cbSize', ctypes.c_uint),
-            ('dwTime', ctypes.c_uint),
-        ]
-
     def get_idle_duration(self):
         lastInputInfo = LASTINPUTINFO()
         lastInputInfo.cbSize = ctypes.sizeof(lastInputInfo)
@@ -379,7 +371,7 @@ class AppUsageMonitor(QThread):
             millis = ctypes.windll.kernel32.GetTickCount() - lastInputInfo.dwTime
             return millis / 1000.0  # Convert to seconds
         else:
-            return 0  # Could not get idle time
+            return 0  # Nu se poate obține durata inactivității
 
 
 

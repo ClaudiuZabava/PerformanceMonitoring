@@ -15,7 +15,7 @@ def get_system_info():
     processor_type = os_info.processor
     hostname = socket.gethostname()
 
-    # Retrieve the OS installation date
+    # Extrage OS installation date
     os_installation_time = os.path.getctime("/")
     os_installation_date = datetime.datetime.fromtimestamp(os_installation_time).strftime("%Y-%m-%d")
 

@@ -1,3 +1,19 @@
+#=======================================================================================================================
+'''
+Codul pentru asistent ( pentru rezolvarea sarcinilor de asistenta) face parte dintr-un proiect personal mai vechi.
+In timpul anilor de studii, pasionandu-ma manipularea sistemului de operare si ingineria software, am ales sa pun bazele
+unui aisstent ce avea sa ajunga mai tarziu sa faca parte din lucrarea mea de licenta.
+Codul pentru acesta poate fi gasit aici:
+
+-->  https://github.com/ClaudiuZabava/theRichard  <--
+'''
+
+
+
+# ======================== Imports ==========================
+
+
+
 import webbrowser
 import win32gui, win32con
 import speech_recognition as sr
